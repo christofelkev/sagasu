@@ -133,11 +133,12 @@
   .filters-toolbar {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
     background: var(--bg-surface);
     border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-sm);
-    padding: 8px 10px;
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    box-shadow: var(--shadow-xs);
     flex-shrink: 0;
   }
 
@@ -150,7 +151,7 @@
 
   :global(.search-icon) {
     position: absolute;
-    left: 8px;
+    left: 11px;
     color: var(--text-muted);
     pointer-events: none;
   }
@@ -159,27 +160,29 @@
     width: 100%;
     background: var(--bg-input);
     border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-xs);
-    padding: 5px 28px 5px 26px;
+    border-radius: var(--radius-sm);
+    padding: 8px 32px 8px 34px;
     color: var(--text-primary);
-    font-size: 0.78rem;
+    font-size: 0.86rem;
     outline: none;
-    transition: border-color var(--transition-fast);
+    transition: all var(--transition-fast);
   }
   .search-input:focus {
     border-color: var(--border-focus);
+    background: #ffffff;
+    box-shadow: 0 0 0 2px rgba(45, 90, 63, 0.12);
   }
 
   .clear-btn {
     position: absolute;
-    right: 6px;
+    right: 8px;
     background: transparent;
     border: none;
     color: var(--text-muted);
     cursor: pointer;
     display: flex;
     align-items: center;
-    padding: 2px;
+    padding: 3px;
   }
   .clear-btn:hover {
     color: var(--text-primary);
@@ -188,26 +191,26 @@
   .quick-status-tabs {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
     flex-wrap: wrap;
   }
 
   .status-chip {
-    padding: 2px 7px;
-    background: var(--bg-input);
-    border: 1px solid var(--border-faint);
-    border-radius: var(--radius-xs);
-    font-size: 0.72rem;
+    padding: 5px 12px;
+    background: var(--bg-surface-raised);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    font-size: 0.78rem;
     color: var(--text-secondary);
     cursor: pointer;
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 5px;
     transition: all var(--transition-fast);
   }
   .status-chip:hover {
     color: var(--text-primary);
-    border-color: var(--border-subtle);
+    border-color: var(--border-strong);
   }
   .status-chip.active {
     background: var(--accent-emerald-subtle);
@@ -224,8 +227,8 @@
   .advanced-drawer {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    padding-top: 8px;
+    gap: 12px;
+    padding-top: 12px;
     border-top: 1px solid var(--border-faint);
     margin-top: 2px;
   }

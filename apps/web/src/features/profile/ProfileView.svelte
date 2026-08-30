@@ -268,61 +268,66 @@
 
 <style>
   .profile-view {
-    max-width: 960px;
+    max-width: 1040px;
     margin: 0 auto;
+    width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 24px;
   }
 
   .profile-header {
-    padding: 16px 20px;
+    padding: 24px 28px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
+    gap: 20px;
     flex-wrap: wrap;
     background: var(--bg-surface);
     border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-xs);
   }
 
   .header-main {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 16px;
   }
 
   .avatar-box {
-    width: 48px;
-    height: 48px;
+    width: 56px;
+    height: 56px;
     border-radius: var(--radius-sm);
-    background: var(--bg-input);
+    background: var(--bg-surface-raised);
     border: 1px solid var(--border-subtle);
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: var(--shadow-xs);
   }
 
   .avatar-initials {
     font-family: var(--font-mono);
-    font-size: 1.1rem;
+    font-size: 1.25rem;
     font-weight: 700;
-    color: var(--text-primary);
+    color: var(--accent-primary);
   }
 
   .user-meta {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 3px;
   }
 
   .user-name {
-    font-size: 1.15rem;
+    font-size: 1.35rem;
+    font-weight: 700;
     color: var(--text-primary);
   }
 
   .user-title {
-    font-size: 0.8rem;
+    font-size: 0.88rem;
     color: var(--text-secondary);
   }
 
@@ -330,44 +335,44 @@
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 3px;
-    font-size: 0.74rem;
+    gap: 10px;
+    margin-top: 4px;
+    font-size: 0.78rem;
     color: var(--text-muted);
   }
 
   .coord {
     display: flex;
     align-items: center;
-    gap: 3px;
+    gap: 4px;
   }
 
   .header-actions {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
   }
 
   .sub-nav-tabs {
     display: flex;
     gap: 4px;
-    background: var(--bg-surface);
+    background: var(--bg-surface-raised);
     border: 1px solid var(--border-subtle);
-    padding: 3px;
-    border-radius: var(--radius-sm);
+    padding: 4px;
+    border-radius: var(--radius-md);
     width: fit-content;
   }
 
   .sub-tab {
     display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 6px 12px;
+    gap: 8px;
+    padding: 8px 16px;
     background: transparent;
     border: none;
-    border-radius: var(--radius-xs);
-    color: var(--text-muted);
-    font-size: 0.78rem;
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    font-size: 0.84rem;
     font-weight: 500;
     cursor: pointer;
     transition: all var(--transition-fast);
@@ -378,50 +383,54 @@
   }
 
   .sub-tab.active {
-    background: var(--bg-surface-raised);
-    color: var(--text-primary);
+    background: var(--bg-surface);
+    color: var(--accent-primary);
     font-weight: 600;
+    box-shadow: var(--shadow-xs);
   }
 
   .personal-form-grid {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 20px;
   }
 
   .card {
-    padding: 16px 18px;
+    padding: 24px 28px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 18px;
     background: var(--bg-surface);
     border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-xs);
   }
 
   .card-title {
-    font-size: 0.95rem;
+    font-size: 1.08rem;
+    font-weight: 600;
     color: var(--text-primary);
   }
 
   .card-subtitle {
-    font-size: 0.74rem;
+    font-size: 0.82rem;
     color: var(--text-muted);
   }
 
   .form-grid-2 {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    gap: 16px;
   }
 
   .form-group {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 6px;
   }
 
   .field-lbl {
-    font-size: 0.74rem;
+    font-size: 0.8rem;
     color: var(--text-secondary);
     font-weight: 500;
   }
@@ -429,17 +438,17 @@
   .timeline-exp-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 14px;
   }
 
   .exp-item {
-    padding: 12px 14px;
-    background: var(--bg-input);
-    border: 1px solid var(--border-faint);
-    border-radius: var(--radius-sm);
+    padding: 16px 18px;
+    background: var(--bg-surface-raised);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
   }
 
   .exp-header {

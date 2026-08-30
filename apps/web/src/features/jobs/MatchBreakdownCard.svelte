@@ -155,21 +155,21 @@
   .breakdown-card {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 18px;
   }
 
   .factors-section {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    background: var(--bg-input);
+    gap: 14px;
+    background: var(--bg-surface-raised);
     border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-sm);
-    padding: 10px 12px;
+    border-radius: var(--radius-md);
+    padding: 18px 20px;
   }
 
   .section-title {
-    font-size: 0.78rem;
+    font-size: 0.9rem;
     font-weight: 600;
     color: var(--text-primary);
   }
@@ -177,26 +177,26 @@
   .factors-bars-grid {
     display: flex;
     flex-direction: column;
-    gap: 7px;
+    gap: 10px;
   }
 
   .factor-row {
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 5px;
   }
 
   .factor-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 0.72rem;
+    font-size: 0.8rem;
   }
 
   .factor-label {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 6px;
     color: var(--text-secondary);
   }
 
@@ -206,14 +206,14 @@
 
   .factor-score {
     font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: 0.78rem;
     font-weight: 600;
     color: var(--text-primary);
   }
 
   .progress-track {
-    height: 4px;
-    background: var(--bg-surface-raised);
+    height: 6px;
+    background: var(--border-subtle);
     border-radius: var(--radius-full);
     overflow: hidden;
   }
@@ -232,37 +232,37 @@
   .skills-diff-section {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: 14px;
   }
 
   .skills-col {
-    background: var(--bg-input);
+    background: var(--bg-surface-raised);
     border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-sm);
-    padding: 10px 12px;
+    border-radius: var(--radius-md);
+    padding: 16px 18px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 10px;
   }
 
   .diff-title {
-    font-size: 0.72rem;
+    font-size: 0.8rem;
     font-weight: 600;
   }
 
   .tags-wrap {
     display: flex;
     flex-wrap: wrap;
-    gap: 4px;
+    gap: 6px;
   }
 
   .tag-pill {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    padding: 2px 6px;
+    gap: 5px;
+    padding: 3px 8px;
     border-radius: var(--radius-xs);
-    font-size: 0.68rem;
+    font-size: 0.74rem;
     font-weight: 500;
   }
 
@@ -273,72 +273,73 @@
   }
 
   .tag-missing {
-    background: var(--bg-surface-raised);
+    background: var(--bg-surface);
     border: 1px solid var(--border-subtle);
     color: var(--text-muted);
   }
 
   .fit-analysis-card {
-    background: var(--bg-input);
+    background: var(--bg-surface-raised);
     border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-sm);
-    padding: 12px 14px;
+    border-radius: var(--radius-md);
+    padding: 18px 20px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
   }
 
   .fit-header {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
   }
 
   .fit-title {
-    font-size: 0.78rem;
+    font-size: 0.88rem;
     font-weight: 600;
     color: var(--text-primary);
   }
 
   .fit-summary {
-    font-size: 0.76rem;
+    font-size: 0.84rem;
     color: var(--text-secondary);
-    line-height: 1.4;
+    line-height: 1.55;
   }
 
   .notes-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-top: 2px;
+    gap: 12px;
+    margin-top: 4px;
   }
 
   .note-box {
     background: var(--bg-surface);
-    border: 1px solid var(--border-faint);
-    border-radius: var(--radius-xs);
-    padding: 8px 10px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 5px;
+    box-shadow: var(--shadow-xs);
   }
 
   .note-lbl {
-    font-size: 0.66rem;
+    font-size: 0.7rem;
     font-weight: 600;
     color: var(--text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.04em;
   }
 
   .note-txt {
-    font-size: 0.72rem;
+    font-size: 0.8rem;
     color: var(--text-primary);
-    line-height: 1.35;
+    line-height: 1.45;
   }
 
   .text-emerald { color: var(--accent-emerald); }
-  .text-faint { color: var(--text-faint); font-size: 0.7rem; }
+  .text-faint { color: var(--text-faint); font-size: 0.76rem; }
 
   @media (max-width: 640px) {
     .skills-diff-section {

@@ -95,57 +95,60 @@
 
 <style>
   .job-item {
-    padding: 10px 12px;
+    padding: 16px 18px;
     background: var(--bg-surface);
     border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-md);
     cursor: pointer;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
+    box-shadow: var(--shadow-xs);
     transition: all var(--transition-fast);
   }
 
   .job-item:hover {
     border-color: var(--border-strong);
     background: var(--bg-surface-raised);
+    box-shadow: var(--shadow-sm);
   }
 
   .job-item.selected {
     border-color: var(--accent-primary);
     background: var(--bg-surface-raised);
-    box-shadow: 0 0 0 1px var(--accent-primary);
+    box-shadow: 0 0 0 1.5px var(--accent-primary), var(--shadow-sm);
   }
 
   .item-header {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 10px;
+    gap: 12px;
   }
 
   .header-left {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
     flex: 1;
     min-width: 0;
   }
 
   .company-monogram {
-    width: 28px;
-    height: 28px;
-    border-radius: var(--radius-xs);
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-sm);
     background: var(--bg-surface-raised);
     border: 1px solid var(--border-subtle);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.72rem;
+    font-size: 0.82rem;
     font-weight: 700;
     font-family: var(--font-mono);
     color: var(--accent-primary);
     flex-shrink: 0;
+    box-shadow: var(--shadow-xs);
   }
 
   .title-meta {
@@ -153,24 +156,25 @@
     min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: 1px;
+    gap: 2px;
   }
 
   .job-title {
-    font-size: 0.84rem;
+    font-size: 0.94rem;
     font-weight: 600;
     color: var(--text-primary);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    line-height: 1.35;
     margin: 0;
   }
 
   .sub-meta {
     display: flex;
     align-items: center;
-    gap: 4px;
-    font-size: 0.72rem;
+    gap: 6px;
+    font-size: 0.78rem;
     color: var(--text-muted);
   }
 
@@ -187,21 +191,21 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 130px;
+    max-width: 140px;
   }
 
   .badge-mini {
-    padding: 1px 4px;
-    font-size: 0.64rem;
-    border-radius: 2px;
+    padding: 2px 6px;
+    font-size: 0.68rem;
+    border-radius: var(--radius-xs);
     line-height: 1.2;
   }
 
   .score-pill {
-    padding: 2px 6px;
-    border-radius: var(--radius-xs);
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
     font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: 0.78rem;
     font-weight: 700;
     flex-shrink: 0;
   }
@@ -213,7 +217,7 @@
   }
 
   .score-mid {
-    background: var(--bg-input);
+    background: var(--bg-surface-raised);
     color: var(--text-secondary);
     border: 1px solid var(--border-subtle);
   }
@@ -222,16 +226,16 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
-    padding-top: 4px;
+    gap: 10px;
+    padding-top: 8px;
     border-top: 1px solid var(--border-faint);
   }
 
   .footer-left {
     display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 0.7rem;
+    gap: 8px;
+    font-size: 0.76rem;
     flex-wrap: wrap;
   }
 
@@ -239,22 +243,24 @@
     color: var(--accent-emerald);
     font-weight: 600;
     font-family: var(--font-mono);
+    font-size: 0.8rem;
   }
 
   .source-tag {
     color: var(--text-faint);
+    font-size: 0.74rem;
   }
 
   .dedup-tag {
     display: flex;
     align-items: center;
-    gap: 3px;
+    gap: 4px;
     color: var(--text-secondary);
     background: var(--bg-surface-raised);
-    padding: 1px 6px;
+    padding: 2px 7px;
     border-radius: var(--radius-xs);
     border: 1px solid var(--border-subtle);
-    font-size: 0.7rem;
+    font-size: 0.72rem;
   }
 
   .bookmark-btn {
@@ -265,11 +271,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2px;
-    transition: color var(--transition-fast);
+    padding: 4px;
+    border-radius: var(--radius-xs);
+    transition: all var(--transition-fast);
   }
   .bookmark-btn:hover {
     color: var(--text-primary);
+    background: var(--bg-surface-raised);
   }
   .bookmark-btn.saved {
     color: var(--accent-amber);

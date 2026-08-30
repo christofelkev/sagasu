@@ -251,15 +251,15 @@
   .detail-container {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 24px;
   }
 
   .detail-header {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 16px;
-    padding-bottom: 14px;
+    gap: 20px;
+    padding-bottom: 20px;
     border-bottom: 1px solid var(--border-subtle);
     flex-wrap: wrap;
   }
@@ -267,44 +267,46 @@
   .header-main-row {
     display: flex;
     align-items: flex-start;
-    gap: 12px;
+    gap: 16px;
     flex: 1;
     min-width: 280px;
   }
 
   .company-badge-large {
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
     border-radius: var(--radius-sm);
     background: var(--bg-surface-raised);
-    border: 1px solid var(--border-strong);
+    border: 1px solid var(--border-subtle);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.95rem;
+    font-size: 1.15rem;
     font-weight: 700;
     font-family: var(--font-mono);
     color: var(--accent-primary);
     flex-shrink: 0;
+    box-shadow: var(--shadow-xs);
   }
 
   .header-titles {
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 4px;
   }
 
   .detail-title {
-    font-size: 1.15rem;
+    font-size: 1.35rem;
     font-weight: 700;
     color: var(--text-primary);
+    line-height: 1.3;
   }
 
   .detail-sub-meta {
     display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 0.76rem;
+    gap: 8px;
+    font-size: 0.84rem;
     color: var(--text-muted);
     flex-wrap: wrap;
   }
@@ -321,7 +323,7 @@
   .detail-actions {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     flex-wrap: wrap;
   }
 
@@ -329,6 +331,7 @@
     background: var(--accent-primary);
     color: #ffffff;
     font-weight: 600;
+    box-shadow: 0 1px 3px rgba(45, 90, 63, 0.2);
   }
   .btn-highlight:hover {
     background: #234731;
@@ -336,30 +339,30 @@
 
   .quick-summary-bar {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-    gap: 10px;
-    background: var(--bg-input);
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 14px;
+    background: var(--bg-surface-raised);
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-sm);
-    padding: 10px 14px;
+    padding: 14px 18px;
   }
 
   .stat-box {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 3px;
   }
 
   .stat-label {
-    font-size: 0.66rem;
+    font-size: 0.7rem;
     font-weight: 600;
     color: var(--text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.04em;
   }
 
   .stat-value {
-    font-size: 0.8rem;
+    font-size: 0.88rem;
     font-weight: 600;
     color: var(--text-primary);
     font-family: var(--font-mono);
@@ -368,34 +371,34 @@
   .section-block {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
   }
 
   .block-title {
-    font-size: 0.86rem;
+    font-size: 0.98rem;
     font-weight: 600;
     color: var(--text-primary);
   }
 
   .desc-text {
-    font-size: 0.8rem;
+    font-size: 0.88rem;
     color: var(--text-secondary);
-    line-height: 1.5;
+    line-height: 1.65;
   }
 
   .bullet-list {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
   }
 
   .bullet-list li {
-    font-size: 0.78rem;
+    font-size: 0.86rem;
     color: var(--text-secondary);
-    line-height: 1.45;
+    line-height: 1.55;
     position: relative;
-    padding-left: 14px;
+    padding-left: 16px;
   }
 
   .bullet-list li::before {
@@ -407,11 +410,12 @@
 
   .empty-detail {
     height: 100%;
+    min-height: 300px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--text-muted);
-    font-size: 0.8rem;
+    font-size: 0.88rem;
   }
 
   .text-emerald { color: var(--accent-emerald); }

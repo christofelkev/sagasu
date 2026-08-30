@@ -34,33 +34,25 @@
 
 <style>
   .app-shell {
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     background: var(--bg-canvas);
-    overflow: hidden;
   }
 
   .main-content {
     flex: 1;
-    max-width: 1560px;
+    max-width: 1280px;
     width: 100%;
     margin: 0 auto;
-    padding: 12px 20px;
-    overflow: hidden;
+    padding: 32px 32px 80px;
     display: flex;
     flex-direction: column;
   }
 
   @media (max-width: 1024px) {
-    .app-shell {
-      height: auto;
-      min-height: 100vh;
-      overflow: visible;
-    }
     .main-content {
-      overflow: visible;
-      padding: 12px 14px 40px;
+      padding: 20px 20px 60px;
     }
   }
 </style>

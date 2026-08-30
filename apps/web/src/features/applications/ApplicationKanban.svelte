@@ -168,7 +168,7 @@
   .kanban-view {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 24px;
     width: 100%;
   }
 
@@ -179,28 +179,30 @@
   }
 
   .page-title {
-    font-size: 1.15rem;
+    font-size: 1.35rem;
+    font-weight: 700;
     color: var(--text-primary);
   }
 
   .page-sub {
-    font-size: 0.76rem;
+    font-size: 0.86rem;
     color: var(--text-muted);
+    margin-top: 4px;
   }
 
   .kanban-board {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 12px;
+    gap: 16px;
     overflow-x: auto;
-    padding-bottom: 12px;
-    min-height: calc(100vh - 200px);
+    padding-bottom: 24px;
+    min-height: calc(100vh - 280px);
   }
 
   .kanban-column {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
     min-width: 230px;
   }
 
@@ -208,21 +210,22 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 8px 10px;
+    padding: 10px 14px;
     background: var(--bg-surface);
     border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-xs);
   }
 
   .col-title-group {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
   }
 
   .col-dot {
-    width: 6px;
-    height: 6px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
   }
   .col-dot.badge-neutral { background: var(--text-muted); }
@@ -232,17 +235,17 @@
   .col-dot.badge-emerald { background: var(--accent-emerald); }
 
   .col-name {
-    font-size: 0.76rem;
+    font-size: 0.84rem;
     font-weight: 600;
     color: var(--text-primary);
   }
 
   .col-count {
-    font-size: 0.68rem;
+    font-size: 0.72rem;
     font-family: var(--font-mono);
     color: var(--text-muted);
     background: var(--bg-surface-raised);
-    padding: 1px 5px;
+    padding: 2px 7px;
     border-radius: var(--radius-xs);
     border: 1px solid var(--border-subtle);
   }
@@ -250,92 +253,95 @@
   .cards-lane {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
     flex: 1;
   }
 
   .app-card {
-    padding: 12px;
+    padding: 16px 18px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
     background: var(--bg-surface);
     border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-sm);
-    box-shadow: var(--shadow-sm);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-xs);
     transition: all var(--transition-fast);
   }
 
   .app-card:hover {
     border-color: var(--border-strong);
     background: var(--bg-surface-raised);
+    box-shadow: var(--shadow-sm);
   }
 
   .app-card-top {
     display: flex;
     align-items: flex-start;
-    gap: 8px;
+    gap: 12px;
   }
 
   .company-monogram {
-    width: 28px;
-    height: 28px;
+    width: 36px;
+    height: 36px;
     background: var(--bg-surface-raised);
     border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-xs);
+    border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: 0.82rem;
     font-weight: 700;
     color: var(--accent-primary);
     flex-shrink: 0;
+    box-shadow: var(--shadow-xs);
   }
 
   .app-info {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 1px;
+    gap: 2px;
   }
 
   .app-job-title {
-    font-size: 0.8rem;
+    font-size: 0.92rem;
     font-weight: 600;
     color: var(--text-primary);
-    line-height: 1.25;
+    line-height: 1.35;
   }
 
   .app-company {
-    font-size: 0.7rem;
+    font-size: 0.78rem;
     color: var(--text-secondary);
+    font-weight: 500;
   }
 
   .app-meta {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 0.68rem;
+    font-size: 0.74rem;
     color: var(--text-muted);
   }
 
   .app-location, .app-date {
     display: flex;
     align-items: center;
-    gap: 3px;
+    gap: 4px;
   }
 
   .interview-callout {
     background: var(--accent-purple-subtle);
     border: 1px solid var(--accent-purple-border);
-    padding: 3px 6px;
+    padding: 4px 8px;
     border-radius: var(--radius-xs);
-    font-size: 0.68rem;
+    font-size: 0.74rem;
     color: var(--accent-purple);
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 5px;
     font-weight: 500;
   }
 
@@ -343,33 +349,35 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 4px;
-    padding-top: 6px;
+    gap: 6px;
+    padding-top: 8px;
     border-top: 1px solid var(--border-faint);
   }
 
   .next-btn, .prep-btn {
-    font-size: 0.7rem;
-    padding: 2px 6px;
+    font-size: 0.76rem;
+    padding: 3px 8px;
+    border-radius: var(--radius-xs);
   }
 
   .empty-lane {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 80px;
-    border: 1px dashed var(--border-faint);
-    border-radius: var(--radius-sm);
+    height: 100px;
+    border: 1px dashed var(--border-subtle);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.4);
   }
 
   .empty-lane-text {
-    font-size: 0.72rem;
+    font-size: 0.78rem;
     color: var(--text-faint);
   }
 
   @media (max-width: 1200px) {
     .kanban-board {
-      grid-template-columns: repeat(5, 230px);
+      grid-template-columns: repeat(5, 250px);
     }
   }
 </style>

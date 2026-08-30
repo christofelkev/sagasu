@@ -116,48 +116,50 @@
   }
 
   .header-container {
-    max-width: 1360px;
+    max-width: 1280px;
     margin: 0 auto;
-    padding: 10px 24px;
+    padding: 14px 32px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
+    gap: 24px;
   }
 
   .brand-section {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
   }
 
   .brand-badge {
-    width: 28px;
-    height: 28px;
+    width: 34px;
+    height: 34px;
     background: var(--bg-surface-raised);
     border: 1px solid var(--border-strong);
     border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: var(--shadow-xs);
   }
 
   .kanji-mark {
     font-family: var(--font-jp);
     font-weight: 700;
-    font-size: 0.95rem;
+    font-size: 1.1rem;
     color: var(--accent-primary);
   }
 
   .brand-meta {
     display: flex;
     flex-direction: column;
+    gap: 1px;
   }
 
   .brand-name {
-    font-size: 0.92rem;
+    font-size: 1.02rem;
     font-weight: 700;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.03em;
     color: var(--text-primary);
     display: flex;
     align-items: baseline;
@@ -167,8 +169,8 @@
   .brand-status {
     display: flex;
     align-items: center;
-    gap: 5px;
-    font-size: 0.66rem;
+    gap: 6px;
+    font-size: 0.68rem;
     font-family: var(--font-mono);
     color: var(--text-muted);
     letter-spacing: 0.02em;
@@ -179,18 +181,18 @@
     align-items: center;
     background: var(--bg-surface-raised);
     border: 1px solid var(--border-subtle);
-    padding: 3px;
+    padding: 4px;
     border-radius: var(--radius-md);
-    gap: 2px;
+    gap: 4px;
   }
 
   .nav-tab {
     display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 5px 12px;
+    gap: 8px;
+    padding: 7px 16px;
     border-radius: var(--radius-sm);
-    font-size: 0.8rem;
+    font-size: 0.86rem;
     font-weight: 500;
     color: var(--text-secondary);
     background: transparent;
@@ -207,15 +209,15 @@
     color: var(--text-primary);
     background: var(--bg-surface);
     border: 1px solid var(--border-subtle);
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-xs);
   }
 
   .tab-count {
     font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: 0.72rem;
     background: var(--border-subtle);
     color: var(--text-muted);
-    padding: 1px 5px;
+    padding: 2px 7px;
     border-radius: var(--radius-full);
   }
 
@@ -228,22 +230,22 @@
   .header-actions {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 16px;
   }
 
   .stats-group {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
   }
 
   .stat-pill {
-    font-size: 0.74rem;
+    font-size: 0.78rem;
     color: var(--text-secondary);
     background: var(--bg-surface-raised);
     border: 1px solid var(--border-subtle);
-    padding: 3px 8px;
-    border-radius: var(--radius-xs);
+    padding: 5px 10px;
+    border-radius: var(--radius-sm);
   }
 
   .stat-pill strong {

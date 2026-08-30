@@ -1,4 +1,4 @@
-/* SAGASU 探す — Japanese Minimalist Matcha Light Design System */
+/* SAGASU 探す — Japanese Minimalist Matcha Light Design System (Spacious & Airy) */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&display=swap');
 
 :root {
@@ -8,64 +8,65 @@
   --font-jp: 'Noto Sans JP', 'Inter', sans-serif;
 
   /* Surfaces & Canvas (Japanese Matcha Light Theme) */
-  --bg-canvas: #f5f7f2;          /* Soft Japanese tea paper / pale matcha cream */
+  --bg-canvas: #f6f8f3;          /* Soft Japanese tea paper / pale matcha cream */
   --bg-surface: #ffffff;         /* Crisp porcelain white card surface */
-  --bg-surface-raised: #ebf1e8;  /* Matcha milk / light sage wash */
-  --bg-surface-hover: #e0e9dc;   /* Deeper matcha mist on hover */
+  --bg-surface-raised: #eef3eb;  /* Matcha milk / light sage wash */
+  --bg-surface-hover: #e3ebd0;   /* Deeper matcha mist on hover */
   --bg-input: #f9fbf8;           /* Light organic linen input background */
-  --bg-glass: rgba(255, 255, 255, 0.92);
+  --bg-glass: rgba(255, 255, 255, 0.95);
 
   /* Borders & Dividers */
-  --border-faint: #e6ede2;
-  --border-subtle: #d7e2d1;
-  --border-strong: #b8ccaf;
+  --border-faint: #e8eee4;
+  --border-subtle: #d9e4d3;
+  --border-strong: #bacdb2;
   --border-focus: #2d5a3f;       /* Ceremonial matcha green */
 
   /* Text & Hierarchy (Deep forest bark / tea soot - ultra crisp readability) */
-  --text-primary: #15241b;       /* Dark rich matcha black */
-  --text-secondary: #3b4e41;     /* Deep foliage charcoal */
-  --text-muted: #627768;         /* Moss grey */
-  --text-faint: #90a596;         /* Pale sage */
+  --text-primary: #142319;       /* Dark rich matcha black */
+  --text-secondary: #3c4f42;     /* Deep foliage charcoal */
+  --text-muted: #647a6b;         /* Moss grey */
+  --text-faint: #92a798;         /* Pale sage */
 
   /* Matcha Accents */
   --accent-primary: #2d5a3f;     /* Deep Ceremonial Matcha Green */
   --accent-emerald: #2d5a3f;     /* Matcha leaf */
-  --accent-emerald-subtle: #ebf5ee;
-  --accent-emerald-border: #bfe3cc;
+  --accent-emerald-subtle: #edf6f0;
+  --accent-emerald-border: #bfe5cd;
 
   --accent-cyan: #266b8c;        /* Indigo stream */
-  --accent-cyan-subtle: #eaf4f8;
-  --accent-cyan-border: #bce0ef;
+  --accent-cyan-subtle: #ebf5f9;
+  --accent-cyan-border: #bce1f0;
 
   --accent-amber: #a25c1b;       /* Hojicha roasted tea */
-  --accent-amber-subtle: #fdf5ec;
-  --accent-amber-border: #fadbb4;
+  --accent-amber-subtle: #fef6ee;
+  --accent-amber-border: #f9ddb8;
 
   --accent-rose: #be3249;        /* Umeboshi plum */
-  --accent-rose-subtle: #fdf0f2;
-  --accent-rose-border: #f8c2cb;
+  --accent-rose-subtle: #fef1f3;
+  --accent-rose-border: #f8c5cd;
 
   --accent-purple: #634ba1;
-  --accent-purple-subtle: #f4f0fa;
-  --accent-purple-border: #dcd0f3;
+  --accent-purple-subtle: #f5f1fb;
+  --accent-purple-border: #ddd2f4;
 
-  /* Radii */
-  --radius-xs: 4px;
-  --radius-sm: 6px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
+  /* Softer, more organic radii */
+  --radius-xs: 5px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
   --radius-full: 9999px;
 
-  /* Shadows (Subtle, Clean Organic Shadows) */
-  --shadow-sm: 0 1px 3px rgba(35, 60, 42, 0.05);
-  --shadow-md: 0 4px 14px rgba(35, 60, 42, 0.08);
-  --shadow-lg: 0 12px 28px rgba(35, 60, 42, 0.12);
-  --shadow-modal: 0 20px 48px -8px rgba(21, 36, 27, 0.25), 0 0 0 1px rgba(35, 60, 42, 0.08);
+  /* Shadows (Soothing, Soft Organic Depth) */
+  --shadow-xs: 0 1px 2px rgba(35, 60, 42, 0.03);
+  --shadow-sm: 0 2px 8px rgba(35, 60, 42, 0.04);
+  --shadow-md: 0 6px 18px rgba(35, 60, 42, 0.06);
+  --shadow-lg: 0 14px 34px rgba(35, 60, 42, 0.08);
+  --shadow-modal: 0 24px 60px -12px rgba(20, 35, 25, 0.22), 0 0 0 1px rgba(35, 60, 42, 0.06);
 
   /* Transitions */
-  --transition-fast: 0.12s ease;
-  --transition-smooth: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: 0.15s ease;
+  --transition-smooth: 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 *, *::before, *::after {
@@ -78,8 +79,8 @@ html, body {
   background-color: var(--bg-canvas);
   color: var(--text-primary);
   font-family: var(--font-sans);
-  font-size: 13.5px;
-  line-height: 1.5;
+  font-size: 14.5px;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
@@ -87,8 +88,8 @@ html, body {
 
 /* Minimalist Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
@@ -106,14 +107,14 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-sans);
   font-weight: 600;
   color: var(--text-primary);
-  line-height: 1.3;
+  line-height: 1.35;
   letter-spacing: -0.015em;
 }
 
-h1 { font-size: 1.75rem; letter-spacing: -0.025em; }
-h2 { font-size: 1.35rem; letter-spacing: -0.02em; }
-h3 { font-size: 1.1rem; }
-h4 { font-size: 0.95rem; }
+h1 { font-size: 1.85rem; letter-spacing: -0.025em; }
+h2 { font-size: 1.45rem; letter-spacing: -0.02em; }
+h3 { font-size: 1.2rem; }
+h4 { font-size: 1.02rem; }
 
 p {
   color: var(--text-secondary);
@@ -139,21 +140,22 @@ button, input, select, textarea {
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
-  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .glass-panel:hover {
   border-color: var(--border-strong);
+  box-shadow: var(--shadow-md);
 }
 
-/* Clean Minimal Badges */
+/* Badges */
 .badge {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 2px 7px;
+  gap: 5px;
+  padding: 3px 9px;
   border-radius: var(--radius-xs);
-  font-size: 0.72rem;
+  font-size: 0.76rem;
   font-weight: 500;
   line-height: 1.3;
   letter-spacing: 0.01em;
@@ -195,15 +197,15 @@ button, input, select, textarea {
   border: 1px solid var(--border-subtle);
 }
 
-/* Button System (High-Craft Precision) */
+/* Button System (Spacious & Crisp) */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding: 6px 12px;
+  gap: 7px;
+  padding: 8px 16px;
   border-radius: var(--radius-sm);
-  font-size: 0.82rem;
+  font-size: 0.86rem;
   font-weight: 500;
   cursor: pointer;
   border: 1px solid transparent;
@@ -216,9 +218,11 @@ button, input, select, textarea {
   background: var(--accent-primary);
   color: #ffffff;
   font-weight: 600;
+  box-shadow: 0 1px 3px rgba(45, 90, 63, 0.2);
 }
 .btn-primary:hover {
   background: #234731;
+  box-shadow: 0 3px 8px rgba(45, 90, 63, 0.28);
 }
 .btn-primary:active {
   background: #1a3625;
@@ -228,6 +232,7 @@ button, input, select, textarea {
   background: var(--bg-surface);
   color: var(--text-primary);
   border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-xs);
 }
 .btn-secondary:hover {
   background: var(--bg-surface-raised);
@@ -238,6 +243,7 @@ button, input, select, textarea {
   background: var(--accent-emerald);
   color: #ffffff;
   font-weight: 600;
+  box-shadow: 0 1px 3px rgba(45, 90, 63, 0.2);
 }
 .btn-emerald:hover {
   background: #234731;
@@ -253,15 +259,15 @@ button, input, select, textarea {
 }
 
 .btn-sm {
-  padding: 4px 9px;
-  font-size: 0.76rem;
+  padding: 5px 11px;
+  font-size: 0.78rem;
   border-radius: var(--radius-xs);
 }
 
 .btn-lg {
-  padding: 9px 18px;
-  font-size: 0.9rem;
-  border-radius: var(--radius-md);
+  padding: 11px 22px;
+  font-size: 0.94rem;
+  border-radius: var(--radius-sm);
   font-weight: 600;
 }
 
@@ -276,16 +282,17 @@ button, input, select, textarea {
   background: var(--bg-input);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
-  padding: 7px 11px;
+  padding: 9px 13px;
   color: var(--text-primary);
-  font-size: 0.84rem;
+  font-size: 0.88rem;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
   outline: none;
 }
 
 .input-text:focus, .input-select:focus, .input-textarea:focus {
   border-color: var(--border-focus);
-  box-shadow: 0 0 0 1px var(--border-focus);
+  box-shadow: 0 0 0 2px rgba(45, 90, 63, 0.12);
+  background: #ffffff;
 }
 
 .input-select {
@@ -300,27 +307,27 @@ button, input, select, textarea {
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(21, 36, 27, 0.45);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background: rgba(20, 35, 25, 0.4);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
-  animation: fadeIn 0.15s ease-out;
+  padding: 28px;
+  animation: fadeIn 0.18s ease-out;
 }
 
 .modal-content {
   background: var(--bg-surface);
-  border: 1px solid var(--border-strong);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-modal);
   width: 100%;
-  max-width: 800px;
+  max-width: 860px;
   max-height: 88vh;
   overflow-y: auto;
-  animation: scaleUp 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: scaleUp 0.18s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
 }
 
@@ -330,59 +337,54 @@ button, input, select, textarea {
 }
 
 @keyframes scaleUp {
-  from { opacity: 0; transform: scale(0.98) translateY(6px); }
+  from { opacity: 0; transform: scale(0.98) translateY(8px); }
   to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 /* Status Indicator Dot */
 .pulsing-dot {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: var(--accent-emerald);
   display: inline-block;
 }
 
-/* Split-Pane & High-Density Workspace Utilities */
+/* Split-Pane & Workspace Utilities (Spacious & Natural) */
 .workspace-split {
   display: grid;
   grid-template-columns: 440px 1fr;
-  gap: 16px;
-  height: calc(100vh - 57px);
-  overflow: hidden;
+  gap: 28px;
+  align-items: start;
+  width: 100%;
 }
 
 .pane-feed {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  overflow-y: auto;
-  gap: 10px;
-  padding-right: 4px;
+  gap: 16px;
 }
 
 .pane-detail {
-  height: 100%;
+  position: sticky;
+  top: 90px;
+  max-height: calc(100vh - 120px);
   overflow-y: auto;
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  padding: 20px 24px;
+  padding: 28px 32px;
   box-shadow: var(--shadow-sm);
 }
 
 @media (max-width: 1024px) {
   .workspace-split {
     grid-template-columns: 1fr;
-    height: auto;
-    overflow: visible;
-  }
-  .pane-feed {
-    height: auto;
-    overflow-y: visible;
+    gap: 20px;
   }
   .pane-detail {
-    height: auto;
-    overflow-y: visible;
+    position: static;
+    max-height: none;
+    padding: 20px 22px;
   }
 }
