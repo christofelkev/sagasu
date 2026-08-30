@@ -33,9 +33,9 @@
   <!-- Header -->
   <div class="pref-header glass-panel">
     <div>
-      <h2 class="pref-title">Job Discovery &amp; Collector Preferences</h2>
+      <h2 class="pref-title">Search &amp; Collector Settings</h2>
       <p class="pref-sub">
-        Configure automated job source connectors, query expansion, and quality thresholds (PRD Sections 9 &amp; 10).
+        Configure active source connectors, query expansion variants, and discovery cadence.
       </p>
     </div>
 
@@ -46,13 +46,13 @@
   </div>
 
   <div class="pref-grid">
-    <!-- 1. Source Adapters Grid (PRD Section 10) -->
+    <!-- 1. Source Adapters Grid -->
     <div class="pref-card glass-panel">
       <div class="card-title-row">
         <Layers size={16} class="card-icon" />
         <div>
-          <h3 class="card-heading">Active Job Source Adapters</h3>
-          <p class="card-subheading">Connectors handling ingestion, normalization, and deduplication (PRD Section 10).</p>
+          <h3 class="card-heading">Active Source Connectors</h3>
+          <p class="card-subheading">Enabled job platforms and aggregators.</p>
         </div>
       </div>
 
@@ -67,7 +67,7 @@
                 </span>
               </div>
               <div class="adapter-stats">
-                <span class="stat-count">{src.itemsCount} opportunities indexed</span>
+                <span class="stat-count">{src.itemsCount} indexed</span>
                 {#if src.lastSyncedAt}
                   <span class="dot">•</span>
                   <span class="stat-time">
@@ -90,20 +90,20 @@
       </div>
     </div>
 
-    <!-- 2. AI Query Generator Simulator (PRD Section 9) -->
+    <!-- 2. Query Generator Simulator -->
     <div class="pref-card glass-panel">
       <div class="card-title-row">
         <Sparkles size={16} class="card-icon" />
         <div>
-          <h3 class="card-heading">Discovery Query Expansion Engine</h3>
+          <h3 class="card-heading">Search Query Expansion</h3>
           <p class="card-subheading">
-            SAGASU expands target preferences into multi-platform query variants (PRD Section 9).
+            Expanded search queries derived from your target roles and keywords.
           </p>
         </div>
       </div>
 
       <div class="query-preview-box">
-        <span class="query-box-title">Derived External Search Queries:</span>
+        <span class="query-box-title">Generated Query Variants:</span>
         <div class="query-pills">
           {#each generatedQueries as q}
             <span class="query-pill">
@@ -116,7 +116,7 @@
 
       <!-- Keywords Manager -->
       <div class="keywords-field">
-        <label for="pref-keywords" class="field-lbl">Target Keywords (Comma Separated)</label>
+        <label for="pref-keywords" class="field-lbl">Target Keywords</label>
         <input
           id="pref-keywords"
           type="text"
@@ -150,8 +150,8 @@
       <div class="card-title-row">
         <Cpu size={16} class="card-icon" />
         <div>
-          <h3 class="card-heading">Automation &amp; Quality Thresholds</h3>
-          <p class="card-subheading">Control matching score cutoffs and scheduled collector frequency.</p>
+          <h3 class="card-heading">Discovery Cadence &amp; Notifications</h3>
+          <p class="card-subheading">Alert thresholds and auto-sync schedule.</p>
         </div>
       </div>
 
