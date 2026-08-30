@@ -13,8 +13,9 @@
     Send
   } from 'lucide-svelte';
 
-  $: activeAppId = $applicationStore.activePreparingAppId;
-  $: application = $applicationStore.find((a) => a.id === $activeAppId);
+  const activePreparingAppId = applicationStore.activePreparingAppId;
+  $: activeAppId = $activePreparingAppId;
+  $: application = $applicationStore.find((a) => a.id === activeAppId);
 
   let activeTab: 'resume' | 'coverletter' | 'questions' | 'recruiter' = 'coverletter';
   let copiedField: string | null = null;

@@ -4,7 +4,8 @@
 
   const platforms = ['LinkedIn', 'TechInAsia', 'Glints', 'RemoteOK', 'Deel', 'Company Careers'];
 
-  $: filters = $jobStore.filters;
+  const filtersStore = jobStore.filters;
+  $: filters = $filtersStore;
 
   function togglePlatform(p: string) {
     const current = filters.sourcePlatforms;

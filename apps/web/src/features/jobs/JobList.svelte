@@ -5,8 +5,8 @@
   import JobDetailModal from './JobDetailModal.svelte';
   import { SearchX, RefreshCw } from 'lucide-svelte';
 
-  $: filteredJobs = $jobStore.filtered;
-  $: selectedJobId = $jobStore.selectedJobId;
+  const filteredJobs = jobStore.filtered;
+  const selectedJobId = jobStore.selectedJobId;
   $: selectedJob = $jobStore.find((j) => j.id === $selectedJobId);
 </script>
 

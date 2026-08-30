@@ -15,7 +15,7 @@
   $: highMatches = $jobStore.filter((j) => j.matchScore >= 80).length;
   $: savedCount = $jobStore.filter((j) => j.status === 'saved').length;
   $: activeApps = $applicationStore.filter((a) => a.status !== 'REJECTED' && a.status !== 'WITHDRAWN').length;
-  $: isSyncing = $jobStore.isSyncing;
+  const isSyncing = jobStore.isSyncing;
 </script>
 
 <header class="header">
