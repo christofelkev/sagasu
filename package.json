@@ -11,5 +11,8 @@
     "dev": "bun --cwd apps/web run dev",
     "build": "bun --cwd apps/web run build",
     "check": "bun --cwd apps/web run check"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^25.9.0"
   }
 }
