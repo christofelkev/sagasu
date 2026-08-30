@@ -56,10 +56,10 @@
     <div class="modal-header">
       <div class="header-left">
         <div class="cv-badge">
-          <Sparkles size={13} />
-          <span>CV IMPORT &amp; EXTRACTION (PRD SECTION 8)</span>
+          <Sparkles size={12} />
+          <span>RESUME IMPORT</span>
         </div>
-        <h3 class="modal-title">Extract Structured Career Profile</h3>
+        <h3 class="modal-title">Import Profile from Resume</h3>
       </div>
       <button type="button" class="close-btn" on:click={onClose} aria-label="Close modal">
         <X size={16} />
@@ -82,8 +82,8 @@
           </div>
 
           <button type="button" class="btn btn-primary" on:click|stopPropagation={startExtraction}>
-            <Sparkles size={13} />
-            <span>Analyze &amp; Extract Parameters</span>
+            <Sparkles size={12} />
+            <span>Extract Profile</span>
           </button>
         </div>
 
@@ -91,28 +91,28 @@
       {:else if step === 'parsing'}
         <div class="parsing-state">
           <div class="parsing-spinner"></div>
-          <h4 class="parsing-title">Parsing CV Document...</h4>
+          <h4 class="parsing-title">Parsing Resume...</h4>
           <p class="parsing-sub">
-            Extracting career history, verified skill taxonomy, and contact coordinates.
+            Extracting skills, experience, and contact details.
           </p>
         </div>
 
-      <!-- Step 3: Review Diff before applying (PRD Section 8) -->
+      <!-- Step 3: Review Diff before applying -->
       {:else if step === 'review'}
         <div class="review-pane">
           <div class="notice-card">
             <Check size={14} class="text-emerald" />
             <div class="notice-text">
-              <span class="notice-title">Human-in-the-Loop Review (PRD Section 8)</span>
+              <span class="notice-title">Review Extracted Profile</span>
               <span class="notice-sub">
-                Inspect extracted parameters before merging them into your canonical profile.
+                Review and edit parameters before merging into your active profile.
               </span>
             </div>
           </div>
 
           <!-- Extracted Title -->
           <div class="diff-card">
-            <label for="ext-headline" class="diff-heading">Extracted Professional Headline</label>
+            <label for="ext-headline" class="diff-heading">Headline</label>
             <input
               id="ext-headline"
               type="text"
@@ -123,7 +123,7 @@
 
           <!-- Extracted Bio -->
           <div class="diff-card">
-            <label for="ext-bio" class="diff-heading">Extracted Professional Summary</label>
+            <label for="ext-bio" class="diff-heading">Professional Summary</label>
             <textarea
               id="ext-bio"
               class="input-textarea"
@@ -134,7 +134,7 @@
 
           <!-- Extracted Skills Matrix -->
           <div class="diff-card">
-            <span class="diff-heading">Extracted Technical Skills ({extractedData.skills.length})</span>
+            <span class="diff-heading">Skills ({extractedData.skills.length})</span>
             <div class="skills-chips-review">
               {#each extractedData.skills as skill}
                 <span class="skill-pill-review">

@@ -125,13 +125,13 @@
           </div>
         </div>
 
-        <!-- Career Criteria Card (Used in Deterministic Matching PRD Section 13) -->
+        <!-- Career Criteria Card -->
         <div class="card glass-panel">
           <div class="card-header-row">
             <div>
               <h3 class="card-title">Career Matching Parameters</h3>
               <p class="card-subtitle">
-                Authoritative parameters used by SAGASU's 6-factor deterministic matching engine (PRD Section 13).
+                Parameters used to evaluate opportunity fit, salary, and remote alignment.
               </p>
             </div>
           </div>
