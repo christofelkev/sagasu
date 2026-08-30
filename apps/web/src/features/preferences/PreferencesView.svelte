@@ -296,8 +296,8 @@
 
   .source-adapter-row {
     padding: 10px 12px;
-    background: var(--bg-input);
-    border: 1px solid var(--border-faint);
+    background: var(--bg-surface-raised);
+    border: 1px solid var(--border-subtle);
     border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
@@ -338,8 +338,8 @@
   }
 
   .query-preview-box {
-    background: var(--bg-input);
-    border: 1px solid var(--border-faint);
+    background: var(--bg-surface-raised);
+    border: 1px solid var(--border-subtle);
     border-radius: var(--radius-sm);
     padding: 10px 12px;
     display: flex;
@@ -375,7 +375,7 @@
     width: 4px;
     height: 4px;
     border-radius: 50%;
-    background: #34d399;
+    background: var(--accent-emerald);
   }
 
   .keywords-field {

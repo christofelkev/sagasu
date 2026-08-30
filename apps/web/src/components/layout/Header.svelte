@@ -146,7 +146,7 @@
     font-family: var(--font-jp);
     font-weight: 700;
     font-size: 0.95rem;
-    color: var(--text-primary);
+    color: var(--accent-primary);
   }
 
   .brand-meta {
@@ -177,7 +177,7 @@
   .nav-segment {
     display: flex;
     align-items: center;
-    background: var(--bg-input);
+    background: var(--bg-surface-raised);
     border: 1px solid var(--border-subtle);
     padding: 3px;
     border-radius: var(--radius-md);
@@ -205,22 +205,24 @@
 
   .nav-tab.active {
     color: var(--text-primary);
-    background: var(--bg-surface-raised);
+    background: var(--bg-surface);
     border: 1px solid var(--border-subtle);
+    box-shadow: var(--shadow-sm);
   }
 
   .tab-count {
     font-family: var(--font-mono);
     font-size: 0.7rem;
-    background: rgba(255, 255, 255, 0.06);
+    background: var(--border-subtle);
     color: var(--text-muted);
     padding: 1px 5px;
     border-radius: var(--radius-full);
   }
 
   .tab-count.count-active {
-    color: var(--text-primary);
-    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    background: var(--accent-primary);
+    font-weight: 600;
   }
 
   .header-actions {
@@ -239,7 +241,7 @@
     font-size: 0.74rem;
     color: var(--text-secondary);
     background: var(--bg-surface-raised);
-    border: 1px solid var(--border-faint);
+    border: 1px solid var(--border-subtle);
     padding: 3px 8px;
     border-radius: var(--radius-xs);
   }
@@ -250,7 +252,7 @@
   }
 
   .text-emerald {
-    color: #34d399 !important;
+    color: var(--accent-emerald);
   }
 
   :global(.spin-icon) {

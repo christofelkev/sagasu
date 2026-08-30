@@ -112,9 +112,9 @@
   }
 
   .job-item.selected {
-    border-color: rgba(255, 255, 255, 0.3);
+    border-color: var(--accent-primary);
     background: var(--bg-surface-raised);
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 0 1px var(--accent-primary);
   }
 
   .item-header {
@@ -136,7 +136,7 @@
     width: 28px;
     height: 28px;
     border-radius: var(--radius-xs);
-    background: var(--bg-input);
+    background: var(--bg-surface-raised);
     border: 1px solid var(--border-subtle);
     display: flex;
     align-items: center;
@@ -144,7 +144,7 @@
     font-size: 0.72rem;
     font-weight: 700;
     font-family: var(--font-mono);
-    color: var(--text-primary);
+    color: var(--accent-primary);
     flex-shrink: 0;
   }
 
@@ -208,7 +208,7 @@
 
   .score-high {
     background: var(--accent-emerald-subtle);
-    color: #34d399;
+    color: var(--accent-emerald);
     border: 1px solid var(--accent-emerald-border);
   }
 
@@ -236,7 +236,7 @@
   }
 
   .salary-tag {
-    color: #34d399;
+    color: var(--accent-emerald);
     font-weight: 600;
     font-family: var(--font-mono);
   }
@@ -250,10 +250,28 @@
     align-items: center;
     gap: 3px;
     color: var(--text-secondary);
-    background: var(--bg-input);
+    background: var(--bg-surface-raised);
     padding: 1px 6px;
     border-radius: var(--radius-xs);
-    border: 1px solid var(--border-faint);
+    border: 1px solid var(--border-subtle);
     font-size: 0.7rem;
+  }
+
+  .bookmark-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+    transition: color var(--transition-fast);
+  }
+  .bookmark-btn:hover {
+    color: var(--text-primary);
+  }
+  .bookmark-btn.saved {
+    color: var(--accent-amber);
   }
 </style>

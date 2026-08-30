@@ -284,7 +284,7 @@
     font-size: 0.95rem;
     font-weight: 700;
     font-family: var(--font-mono);
-    color: var(--text-primary);
+    color: var(--accent-primary);
     flex-shrink: 0;
   }
 
@@ -326,9 +326,12 @@
   }
 
   .btn-highlight {
-    background: #ffffff;
-    color: #090a0f;
+    background: var(--accent-primary);
+    color: #ffffff;
     font-weight: 600;
+  }
+  .btn-highlight:hover {
+    background: #234731;
   }
 
   .quick-summary-bar {
@@ -411,5 +414,5 @@
     font-size: 0.8rem;
   }
 
-  .text-emerald { color: #34d399; }
+  .text-emerald { color: var(--accent-emerald); }
 </style>

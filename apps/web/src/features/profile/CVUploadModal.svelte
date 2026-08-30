@@ -301,7 +301,7 @@
   .notice-title {
     font-size: 0.76rem;
     font-weight: 600;
-    color: #34d399;
+    color: var(--accent-emerald);
     display: block;
   }
 
@@ -337,7 +337,7 @@
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    background: var(--bg-input);
+    background: var(--bg-surface-raised);
     color: var(--text-primary);
     border: 1px solid var(--border-subtle);
     padding: 2px 7px;

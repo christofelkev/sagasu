@@ -448,7 +448,7 @@
 
   .nav-tab.active {
     color: var(--text-primary);
-    border-bottom-color: #ffffff;
+    border-bottom-color: var(--accent-primary);
     font-weight: 600;
   }
 
@@ -521,7 +521,7 @@
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: var(--bg-input);
+    background: var(--bg-surface-raised);
     border: 1px solid var(--border-subtle);
     color: var(--text-secondary);
     display: flex;
@@ -550,7 +550,8 @@
     flex-direction: column;
     gap: 8px;
     background: var(--bg-input);
-    border: 1px solid var(--border-faint);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
   }
 
   .qa-question-row {
@@ -594,6 +595,7 @@
     background: var(--bg-surface);
     padding: 5px 8px;
     border-radius: var(--radius-xs);
+    border: 1px solid var(--border-faint);
   }
 
   .rat-label {
@@ -633,7 +635,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #34d399;
+    color: var(--accent-emerald);
     flex-shrink: 0;
   }
 

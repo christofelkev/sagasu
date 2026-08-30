@@ -210,10 +210,10 @@
     border-color: var(--border-subtle);
   }
   .status-chip.active {
-    background: var(--bg-surface-raised);
-    color: var(--text-primary);
-    border-color: var(--border-strong);
-    font-weight: 500;
+    background: var(--accent-emerald-subtle);
+    color: var(--accent-emerald);
+    border-color: var(--accent-emerald-border);
+    font-weight: 600;
   }
 
   .filter-btn {
@@ -268,10 +268,10 @@
   .range-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 11px;
-    height: 11px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
-    background: #ffffff;
+    background: var(--accent-primary);
     cursor: pointer;
   }
 
@@ -308,6 +308,6 @@
   }
 
   .text-emerald {
-    color: #34d399;
+    color: var(--accent-emerald);
   }
 </style>

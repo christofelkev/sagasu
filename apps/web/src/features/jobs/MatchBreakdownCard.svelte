@@ -224,10 +224,10 @@
     transition: width 0.3s ease;
   }
 
-  .bar-emerald { background: #10b981; }
-  .bar-cyan { background: #38bdf8; }
-  .bar-amber { background: #f59e0b; }
-  .bar-purple { background: #a78bfa; }
+  .bar-emerald { background: var(--accent-emerald); }
+  .bar-cyan { background: var(--accent-cyan); }
+  .bar-amber { background: var(--accent-amber); }
+  .bar-purple { background: var(--accent-purple); }
 
   .skills-diff-section {
     display: grid;
@@ -269,7 +269,7 @@
   .tag-matched {
     background: var(--accent-emerald-subtle);
     border: 1px solid var(--accent-emerald-border);
-    color: #34d399;
+    color: var(--accent-emerald);
   }
 
   .tag-missing {
@@ -337,7 +337,7 @@
     line-height: 1.35;
   }
 
-  .text-emerald { color: #34d399; }
+  .text-emerald { color: var(--accent-emerald); }
   .text-faint { color: var(--text-faint); font-size: 0.7rem; }
 
   @media (max-width: 640px) {

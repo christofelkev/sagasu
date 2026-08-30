@@ -53,7 +53,7 @@
 
   .ring-bg {
     fill: none;
-    stroke: rgba(255, 255, 255, 0.08);
+    stroke: var(--border-subtle);
   }
 
   .ring-progress {
@@ -68,22 +68,22 @@
     align-items: baseline;
     justify-content: center;
     font-family: var(--font-mono);
-    font-weight: 600;
+    font-weight: 700;
     line-height: 1;
   }
 
-  /* Color Schemes without cheesy neon glows */
-  .score-emerald .ring-progress { stroke: #10b981; }
-  .score-emerald .score-text { color: #34d399; }
+  /* Color Schemes */
+  .score-emerald .ring-progress { stroke: var(--accent-emerald); }
+  .score-emerald .score-text { color: var(--accent-emerald); }
 
-  .score-cyan .ring-progress { stroke: #38bdf8; }
-  .score-cyan .score-text { color: #38bdf8; }
+  .score-cyan .ring-progress { stroke: var(--accent-cyan); }
+  .score-cyan .score-text { color: var(--accent-cyan); }
 
-  .score-amber .ring-progress { stroke: #f59e0b; }
-  .score-amber .score-text { color: #fbbf24; }
+  .score-amber .ring-progress { stroke: var(--accent-amber); }
+  .score-amber .score-text { color: var(--accent-amber); }
 
-  .score-rose .ring-progress { stroke: #f43f5e; }
-  .score-rose .score-text { color: #fb7185; }
+  .score-rose .ring-progress { stroke: var(--accent-rose); }
+  .score-rose .score-text { color: var(--accent-rose); }
 
   /* Sizes */
   .size-sm .score-number { font-size: 0.7rem; }

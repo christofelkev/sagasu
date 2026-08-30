@@ -1,4 +1,4 @@
-/* SAGASU 探す — Clean Minimalist Design System */
+/* SAGASU 探す — Japanese Minimalist Matcha Light Design System */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&display=swap');
 
 :root {
@@ -7,47 +7,47 @@
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
   --font-jp: 'Noto Sans JP', 'Inter', sans-serif;
 
-  /* Surfaces & Canvas (Dark Slate / Charcoal Theme) */
-  --bg-canvas: #090a0f;
-  --bg-surface: #11141c;
-  --bg-surface-raised: #171b26;
-  --bg-surface-hover: #1e2332;
-  --bg-input: #0d1017;
-  --bg-glass: rgba(17, 20, 28, 0.85);
+  /* Surfaces & Canvas (Japanese Matcha Light Theme) */
+  --bg-canvas: #f5f7f2;          /* Soft Japanese tea paper / pale matcha cream */
+  --bg-surface: #ffffff;         /* Crisp porcelain white card surface */
+  --bg-surface-raised: #ebf1e8;  /* Matcha milk / light sage wash */
+  --bg-surface-hover: #e0e9dc;   /* Deeper matcha mist on hover */
+  --bg-input: #f9fbf8;           /* Light organic linen input background */
+  --bg-glass: rgba(255, 255, 255, 0.92);
 
   /* Borders & Dividers */
-  --border-faint: rgba(255, 255, 255, 0.05);
-  --border-subtle: rgba(255, 255, 255, 0.09);
-  --border-strong: rgba(255, 255, 255, 0.16);
-  --border-focus: rgba(255, 255, 255, 0.35);
+  --border-faint: #e6ede2;
+  --border-subtle: #d7e2d1;
+  --border-strong: #b8ccaf;
+  --border-focus: #2d5a3f;       /* Ceremonial matcha green */
 
-  /* Text & Hierarchy */
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --text-faint: #475569;
+  /* Text & Hierarchy (Deep forest bark / tea soot - ultra crisp readability) */
+  --text-primary: #15241b;       /* Dark rich matcha black */
+  --text-secondary: #3b4e41;     /* Deep foliage charcoal */
+  --text-muted: #627768;         /* Moss grey */
+  --text-faint: #90a596;         /* Pale sage */
 
-  /* Restrained Accents */
-  --accent-primary: #f8fafc;
-  --accent-emerald: #10b981;
-  --accent-emerald-subtle: rgba(16, 185, 129, 0.12);
-  --accent-emerald-border: rgba(16, 185, 129, 0.25);
+  /* Matcha Accents */
+  --accent-primary: #2d5a3f;     /* Deep Ceremonial Matcha Green */
+  --accent-emerald: #2d5a3f;     /* Matcha leaf */
+  --accent-emerald-subtle: #ebf5ee;
+  --accent-emerald-border: #bfe3cc;
 
-  --accent-cyan: #38bdf8;
-  --accent-cyan-subtle: rgba(56, 189, 248, 0.12);
-  --accent-cyan-border: rgba(56, 189, 248, 0.25);
+  --accent-cyan: #266b8c;        /* Indigo stream */
+  --accent-cyan-subtle: #eaf4f8;
+  --accent-cyan-border: #bce0ef;
 
-  --accent-amber: #f59e0b;
-  --accent-amber-subtle: rgba(245, 158, 11, 0.12);
-  --accent-amber-border: rgba(245, 158, 11, 0.25);
+  --accent-amber: #a25c1b;       /* Hojicha roasted tea */
+  --accent-amber-subtle: #fdf5ec;
+  --accent-amber-border: #fadbb4;
 
-  --accent-rose: #f43f5e;
-  --accent-rose-subtle: rgba(244, 63, 94, 0.12);
-  --accent-rose-border: rgba(244, 63, 94, 0.25);
+  --accent-rose: #be3249;        /* Umeboshi plum */
+  --accent-rose-subtle: #fdf0f2;
+  --accent-rose-border: #f8c2cb;
 
-  --accent-purple: #a78bfa;
-  --accent-purple-subtle: rgba(167, 139, 250, 0.12);
-  --accent-purple-border: rgba(167, 139, 250, 0.25);
+  --accent-purple: #634ba1;
+  --accent-purple-subtle: #f4f0fa;
+  --accent-purple-border: #dcd0f3;
 
   /* Radii */
   --radius-xs: 4px;
@@ -57,11 +57,11 @@
   --radius-xl: 16px;
   --radius-full: 9999px;
 
-  /* Shadows (Subtle, Clean) */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.45);
-  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.6);
-  --shadow-modal: 0 20px 48px -8px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  /* Shadows (Subtle, Clean Organic Shadows) */
+  --shadow-sm: 0 1px 3px rgba(35, 60, 42, 0.05);
+  --shadow-md: 0 4px 14px rgba(35, 60, 42, 0.08);
+  --shadow-lg: 0 12px 28px rgba(35, 60, 42, 0.12);
+  --shadow-modal: 0 20px 48px -8px rgba(21, 36, 27, 0.25), 0 0 0 1px rgba(35, 60, 42, 0.08);
 
   /* Transitions */
   --transition-fast: 0.12s ease;
@@ -161,38 +161,38 @@ button, input, select, textarea {
 
 .badge-emerald {
   background: var(--accent-emerald-subtle);
-  color: #34d399;
+  color: var(--accent-emerald);
   border: 1px solid var(--accent-emerald-border);
 }
 
 .badge-cyan {
   background: var(--accent-cyan-subtle);
-  color: #38bdf8;
+  color: var(--accent-cyan);
   border: 1px solid var(--accent-cyan-border);
 }
 
 .badge-amber {
   background: var(--accent-amber-subtle);
-  color: #fbbf24;
+  color: var(--accent-amber);
   border: 1px solid var(--accent-amber-border);
 }
 
 .badge-rose {
   background: var(--accent-rose-subtle);
-  color: #fb7185;
+  color: var(--accent-rose);
   border: 1px solid var(--accent-rose-border);
 }
 
 .badge-purple {
   background: var(--accent-purple-subtle);
-  color: #c084fc;
+  color: var(--accent-purple);
   border: 1px solid var(--accent-purple-border);
 }
 
 .badge-neutral {
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--bg-surface-raised);
   color: var(--text-secondary);
-  border: 1px solid var(--border-faint);
+  border: 1px solid var(--border-subtle);
 }
 
 /* Button System (High-Craft Precision) */
@@ -213,34 +213,34 @@ button, input, select, textarea {
 }
 
 .btn-primary {
-  background: #ffffff;
-  color: #090a0f;
+  background: var(--accent-primary);
+  color: #ffffff;
   font-weight: 600;
 }
 .btn-primary:hover {
-  background: #e2e8f0;
+  background: #234731;
 }
 .btn-primary:active {
-  background: #cbd5e1;
+  background: #1a3625;
 }
 
 .btn-secondary {
-  background: var(--bg-surface-raised);
+  background: var(--bg-surface);
   color: var(--text-primary);
   border: 1px solid var(--border-subtle);
 }
 .btn-secondary:hover {
-  background: var(--bg-surface-hover);
+  background: var(--bg-surface-raised);
   border-color: var(--border-strong);
 }
 
 .btn-emerald {
-  background: #10b981;
+  background: var(--accent-emerald);
   color: #ffffff;
   font-weight: 600;
 }
 .btn-emerald:hover {
-  background: #059669;
+  background: #234731;
 }
 
 .btn-ghost {
@@ -248,7 +248,7 @@ button, input, select, textarea {
   color: var(--text-secondary);
 }
 .btn-ghost:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--bg-surface-raised);
   color: var(--text-primary);
 }
 
@@ -300,7 +300,7 @@ button, input, select, textarea {
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(4, 5, 8, 0.75);
+  background: rgba(21, 36, 27, 0.45);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   z-index: 1000;
@@ -368,6 +368,7 @@ button, input, select, textarea {
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   padding: 20px 24px;
+  box-shadow: var(--shadow-sm);
 }
 
 @media (max-width: 1024px) {
