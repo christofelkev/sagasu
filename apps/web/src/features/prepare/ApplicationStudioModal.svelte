@@ -68,8 +68,8 @@
       <div class="studio-header">
         <div class="header-left">
           <div class="studio-badge">
-            <Sparkles size={13} />
-            <span>AI APPLICATION STUDIO (PRD SECTION 19)</span>
+            <Sparkles size={12} />
+            <span>APPLICATION STUDIO</span>
           </div>
           <h2 class="target-title">
             Tailoring for <span class="highlight">{job.title}</span> at <span class="highlight">{job.company}</span>
@@ -88,8 +88,8 @@
           class="nav-tab {activeTab === 'coverletter' ? 'active' : ''}"
           on:click={() => (activeTab = 'coverletter')}
         >
-          <Mail size={14} />
-          <span>Tailored Cover Letter</span>
+          <Mail size={13} />
+          <span>Cover Letter</span>
         </button>
 
         <button
@@ -97,7 +97,7 @@
           class="nav-tab {activeTab === 'resume' ? 'active' : ''}"
           on:click={() => (activeTab = 'resume')}
         >
-          <FileText size={14} />
+          <FileText size={13} />
           <span>Resume Positioning</span>
         </button>
 
@@ -106,8 +106,8 @@
           class="nav-tab {activeTab === 'questions' ? 'active' : ''}"
           on:click={() => (activeTab = 'questions')}
         >
-          <HelpCircle size={14} />
-          <span>Application Q&amp;A</span>
+          <HelpCircle size={13} />
+          <span>Q&amp;A Guide</span>
         </button>
 
         <button
@@ -115,8 +115,8 @@
           class="nav-tab {activeTab === 'recruiter' ? 'active' : ''}"
           on:click={() => (activeTab = 'recruiter')}
         >
-          <MessageSquare size={14} />
-          <span>Recruiter Direct Note</span>
+          <MessageSquare size={13} />
+          <span>Recruiter Note</span>
         </button>
       </div>
 
@@ -128,9 +128,9 @@
             <div class="editor-pane">
               <div class="pane-header">
                 <div>
-                  <h4 class="pane-title">Personalized Cover Letter</h4>
+                  <h4 class="pane-title">Tailored Cover Letter</h4>
                   <p class="pane-sub">
-                    Grounded in your verified experience and tailored to {job.company}'s job requirements.
+                    Grounded in your verified experience and matched to {job.company}'s requirements.
                   </p>
                 </div>
                 <div class="header-tools">
@@ -140,7 +140,7 @@
                     disabled={isGeneratingAI}
                     on:click={simulateRegenerate}
                   >
-                    <Sparkles size={12} class={isGeneratingAI ? 'spin-icon' : ''} />
+                    <Sparkles size={11} class={isGeneratingAI ? 'spin-icon' : ''} />
                     <span>Regenerate</span>
                   </button>
                   <button
@@ -149,11 +149,11 @@
                     on:click={() => copyToClipboard(mats.coverLetter, 'Cover Letter')}
                   >
                     {#if copiedField === 'Cover Letter'}
-                      <Check size={12} class="text-emerald" />
+                      <Check size={11} class="text-emerald" />
                       <span>Copied</span>
                     {:else}
-                      <Copy size={12} />
-                      <span>Copy Text</span>
+                      <Copy size={11} />
+                      <span>Copy</span>
                     {/if}
                   </button>
                 </div>
@@ -173,9 +173,9 @@
             <div class="editor-pane">
               <div class="pane-header">
                 <div>
-                  <h4 class="pane-title">Targeted Resume Positioning</h4>
+                  <h4 class="pane-title">Resume Highlights</h4>
                   <p class="pane-sub">
-                    Prioritized highlights matching {job.company}'s tech stack: {job.skills.slice(0, 3).join(', ')}.
+                    Highlights aligned with {job.company}'s required stack: {job.skills.slice(0, 3).join(', ')}.
                   </p>
                 </div>
                 <button
@@ -187,14 +187,14 @@
                       'Resume Highlights'
                     )}
                 >
-                  <Copy size={12} />
+                  <Copy size={11} />
                   <span>Copy All</span>
                 </button>
               </div>
 
               <!-- Tailored Headline -->
               <div class="form-group">
-                <label for="headline-input" class="field-label">Custom Professional Headline</label>
+                <label for="headline-input" class="field-label">Headline</label>
                 <input
                   id="headline-input"
                   type="text"
@@ -209,7 +209,7 @@
 
               <!-- Tailored Summary -->
               <div class="form-group">
-                <label for="summary-input" class="field-label">Targeted Executive Summary</label>
+                <label for="summary-input" class="field-label">Summary</label>
                 <textarea
                   id="summary-input"
                   class="input-textarea"
@@ -224,7 +224,7 @@
 
               <!-- Prioritized Bullet Points -->
               <div class="form-group">
-                <label for="bullet-input-0" class="field-label">Key Experience Bullet Points</label>
+                <label for="bullet-input-0" class="field-label">Key Experience Bullets</label>
                 <div class="bullets-list">
                   {#each mats.tailoredResume.targetedBulletPoints as bullet, idx}
                     <div class="bullet-item">
@@ -252,8 +252,8 @@
             <div class="editor-pane">
               <div class="pane-header">
                 <div>
-                  <h4 class="pane-title">Common Application Q&amp;A Suggestions</h4>
-                  <p class="pane-sub">Prepared answers to likely portal and recruiter screening questions.</p>
+                  <h4 class="pane-title">Application Screening Answers</h4>
+                  <p class="pane-sub">Drafted answers for portal screening questions.</p>
                 </div>
               </div>
 
@@ -269,7 +269,7 @@
                         on:click={() => copyToClipboard(qa.answer, `Answer ${idx + 1}`)}
                         aria-label="Copy answer {idx + 1}"
                       >
-                        <Copy size={12} />
+                        <Copy size={11} />
                       </button>
                     </div>
                     <textarea
@@ -286,7 +286,7 @@
                     ></textarea>
                     {#if qa.rationale}
                       <div class="qa-rationale">
-                        <span class="rat-label">AI Rationale:</span>
+                        <span class="rat-label">Rationale:</span>
                         <span>{qa.rationale}</span>
                       </div>
                     {/if}
@@ -300,16 +300,16 @@
             <div class="editor-pane">
               <div class="pane-header">
                 <div>
-                  <h4 class="pane-title">Recruiter / Hiring Manager Direct Outreach</h4>
-                  <p class="pane-sub">High-conversion direct message for LinkedIn InMail or email.</p>
+                  <h4 class="pane-title">Direct Outreach Note</h4>
+                  <p class="pane-sub">Direct message for LinkedIn InMail or recruiter email.</p>
                 </div>
                 <button
                   type="button"
                   class="btn btn-secondary btn-sm"
                   on:click={() => copyToClipboard(mats.recruiterMessage, 'Recruiter Outreach')}
                 >
-                  <Copy size={12} />
-                  <span>Copy Note</span>
+                  <Copy size={11} />
+                  <span>Copy</span>
                 </button>
               </div>
 
@@ -325,7 +325,7 @@
         {/if}
       </div>
 
-      <!-- Human Approval & Submission Boundary (PRD Section 20) -->
+      <!-- Human Approval & Submission Boundary -->
       <div class="studio-footer">
         <div class="approval-box">
           <label class="approval-checkbox">
@@ -341,9 +341,9 @@
               {/if}
             </div>
             <div class="approval-text">
-              <span class="approval-title">Human Review Verification (PRD Section 20)</span>
+              <span class="approval-title">Human Verification</span>
               <span class="approval-sub">
-                I have inspected and approve these tailored materials before marking this application as submitted.
+                I have reviewed and customized these materials before applying.
               </span>
             </div>
           </label>
@@ -351,17 +351,17 @@
 
         <div class="submission-actions">
           <button type="button" class="btn btn-ghost btn-sm" on:click={() => applicationStore.closeStudio()}>
-            Save Draft &amp; Close
+            Save Draft
           </button>
 
           <button
             type="button"
-            class="btn btn-emerald btn-lg submit-application-btn"
+            class="btn btn-emerald btn-sm submit-application-btn"
             disabled={!mats?.approvedByUser}
             on:click={handleApproveAndSubmit}
           >
-            <Send size={14} />
-            <span>Mark Applied &amp; Track</span>
+            <Send size={12} />
+            <span>Mark as Applied</span>
           </button>
         </div>
       </div>
