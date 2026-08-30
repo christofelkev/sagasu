@@ -342,3 +342,46 @@ button, input, select, textarea {
   background: var(--accent-emerald);
   display: inline-block;
 }
+
+/* Split-Pane & High-Density Workspace Utilities */
+.workspace-split {
+  display: grid;
+  grid-template-columns: 440px 1fr;
+  gap: 16px;
+  height: calc(100vh - 57px);
+  overflow: hidden;
+}
+
+.pane-feed {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+  gap: 10px;
+  padding-right: 4px;
+}
+
+.pane-detail {
+  height: 100%;
+  overflow-y: auto;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 20px 24px;
+}
+
+@media (max-width: 1024px) {
+  .workspace-split {
+    grid-template-columns: 1fr;
+    height: auto;
+    overflow: visible;
+  }
+  .pane-feed {
+    height: auto;
+    overflow-y: visible;
+  }
+  .pane-detail {
+    height: auto;
+    overflow-y: visible;
+  }
+}

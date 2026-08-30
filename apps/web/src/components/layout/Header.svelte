@@ -20,14 +20,14 @@
 
 <header class="header">
   <div class="header-container">
-    <!-- Minimalist Brand & Status -->
+    <!-- Brand & Monogram -->
     <div class="brand-section">
       <div class="brand-badge">
         <span class="kanji-mark">探</span>
       </div>
       <div class="brand-meta">
         <div class="brand-name">
-          SAGASU <span class="brand-jp">探す</span>
+          SAGASU
         </div>
         <div class="brand-status">
           <span class="pulsing-dot"></span>
@@ -36,61 +36,69 @@
       </div>
     </div>
 
-    <!-- Minimalist Segment Navigation -->
+    <!-- Minimalist Navigation Tabs -->
     <nav class="nav-segment">
       <button
+        type="button"
         class="nav-tab {activeTab === 'jobs' ? 'active' : ''}"
         on:click={() => (activeTab = 'jobs')}
       >
-        <Search size={14} />
-        <span>Discovery Feed</span>
+        <Search size={13} />
+        <span>Jobs</span>
         <span class="tab-count">{totalJobs}</span>
       </button>
 
       <button
+        type="button"
         class="nav-tab {activeTab === 'applications' ? 'active' : ''}"
         on:click={() => (activeTab = 'applications')}
       >
-        <Layers size={14} />
+        <Layers size={13} />
         <span>Pipeline</span>
-        <span class="tab-count {activeApps > 0 ? 'count-active' : ''}">{activeApps}</span>
+        {#if activeApps > 0}
+          <span class="tab-count count-active">{activeApps}</span>
+        {/if}
       </button>
 
       <button
+        type="button"
         class="nav-tab {activeTab === 'profile' ? 'active' : ''}"
         on:click={() => (activeTab = 'profile')}
       >
-        <User size={14} />
-        <span>Career Profile</span>
+        <User size={13} />
+        <span>Profile</span>
       </button>
 
       <button
+        type="button"
         class="nav-tab {activeTab === 'preferences' ? 'active' : ''}"
         on:click={() => (activeTab = 'preferences')}
       >
-        <SlidersHorizontal size={14} />
-        <span>Preferences</span>
+        <SlidersHorizontal size={13} />
+        <span>Settings</span>
       </button>
     </nav>
 
-    <!-- Header Actions & Live Counter -->
+    <!-- Header Actions & Counters -->
     <div class="header-actions">
       <div class="stats-group">
         <span class="stat-pill">
-          <strong class="text-emerald">{highMatches}</strong> &gt;80% match
+          <strong class="text-emerald">{highMatches}</strong> high match
         </span>
-        <span class="stat-pill">
-          <strong>{savedCount}</strong> saved
-        </span>
+        {#if savedCount > 0}
+          <span class="stat-pill">
+            <strong>{savedCount}</strong> saved
+          </span>
+        {/if}
       </div>
 
       <button
+        type="button"
         class="btn btn-secondary btn-sm sync-btn"
         disabled={$isSyncing}
         on:click={() => jobStore.syncSources()}
-        title="Sync external job sources"
       >
-        <RefreshCw size={13} class={$isSyncing ? 'spin-icon' : ''} />
+        <RefreshCw size={12} class={$isSyncing ? 'spin-icon' : ''} />
         <span>{$isSyncing ? 'Syncing...' : 'Sync Sources'}</span>
       </button>
     </div>
@@ -154,13 +162,6 @@
     display: flex;
     align-items: baseline;
     gap: 4px;
-  }
-
-  .brand-jp {
-    font-family: var(--font-jp);
-    font-size: 0.76rem;
-    color: var(--text-muted);
-    font-weight: 400;
   }
 
   .brand-status {
