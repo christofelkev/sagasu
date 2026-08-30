@@ -12,11 +12,11 @@
   } from 'lucide-svelte';
 
   const columns: { id: ApplicationStatus; title: string; color: string }[] = [
-    { id: 'SAVED', title: 'Targeted / Saved', color: 'badge-neutral' },
-    { id: 'PREPARING', title: 'Preparing Materials', color: 'badge-amber' },
-    { id: 'APPLIED', title: 'Applied / Submitted', color: 'badge-cyan' },
-    { id: 'INTERVIEW', title: 'Interviews & Rounds', color: 'badge-purple' },
-    { id: 'OFFER', title: 'Offers Received', color: 'badge-emerald' }
+    { id: 'SAVED', title: 'Saved', color: 'badge-neutral' },
+    { id: 'PREPARING', title: 'Preparing', color: 'badge-amber' },
+    { id: 'APPLIED', title: 'Applied', color: 'badge-cyan' },
+    { id: 'INTERVIEW', title: 'Interview', color: 'badge-purple' },
+    { id: 'OFFER', title: 'Offer', color: 'badge-emerald' }
   ];
 
   let selectedTimelineApp: Application | null = null;
@@ -50,9 +50,9 @@
   <!-- Kanban Header -->
   <div class="kanban-header">
     <div>
-      <h2 class="page-title">Application Pipeline Tracker</h2>
+      <h2 class="page-title">Application Pipeline</h2>
       <p class="page-sub">
-        Centralized lifecycle tracking from discovery to offers (PRD Section 21).
+        Track progress across each stage of your active applications.
       </p>
     </div>
   </div>
