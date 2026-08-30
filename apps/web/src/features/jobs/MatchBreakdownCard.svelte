@@ -1,18 +1,14 @@
 <script lang="ts">
   import type { MatchResult } from '@sagasu/api-contract';
-  import MatchScoreBadge from './MatchScoreBadge.svelte';
   import {
     Check,
-    AlertCircle,
     X,
-    Cpu,
-    Calendar,
+    Code,
+    Clock,
     DollarSign,
     MapPin,
     Award,
-    Bot,
-    Compass,
-    HelpCircle
+    Sparkles
   } from 'lucide-svelte';
 
   export let matchResult: MatchResult;
@@ -22,360 +18,179 @@
 </script>
 
 <div class="breakdown-card">
-  <!-- Top Match Score Summary -->
-  <div class="score-summary-panel">
-    <div class="score-header-flex">
-      <MatchScoreBadge score={matchResult.score} size="lg" />
-      <div class="score-info">
-        <h4 class="score-title">
-          {#if matchResult.score >= 90}
-            High Relevance Match
-          {:else if matchResult.score >= 80}
-            Strong Alignment
-          {:else if matchResult.score >= 65}
-            Moderate Match
-          {:else}
-            Lower Compatibility
-          {/if}
-        </h4>
-        <p class="score-calc-desc">
-          Calculated via deterministic formula: Skills (40%) + Exp (20%) + Salary (15%) + Location (10%) + Seniority (10%) + Other (5%)
-        </p>
+  <!-- 6 Deterministic Scoring Factors -->
+  <div class="factors-section">
+    <h4 class="section-title">Deterministic Scoring Breakdown</h4>
+
+    <div class="factors-bars-grid">
+      <!-- Skills (40%) -->
+      <div class="factor-row">
+        <div class="factor-header">
+          <div class="factor-label">
+            <Code size={12} class="factor-ic" />
+            <span>Skills &amp; Tech Stack (40% weight)</span>
+          </div>
+          <span class="factor-score">{factors.skills.score}%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-bar bar-emerald" style="width: {factors.skills.score}%"></div>
+        </div>
+      </div>
+
+      <!-- Experience (20%) -->
+      <div class="factor-row">
+        <div class="factor-header">
+          <div class="factor-label">
+            <Clock size={12} class="factor-ic" />
+            <span>Years of Experience (20% weight)</span>
+          </div>
+          <span class="factor-score">{factors.experience.score}%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-bar bar-cyan" style="width: {factors.experience.score}%"></div>
+        </div>
+      </div>
+
+      <!-- Salary (15%) -->
+      <div class="factor-row">
+        <div class="factor-header">
+          <div class="factor-label">
+            <DollarSign size={12} class="factor-ic" />
+            <span>Compensation Alignment (15% weight)</span>
+          </div>
+          <span class="factor-score">{factors.salary.score}%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-bar bar-amber" style="width: {factors.salary.score}%"></div>
+        </div>
+      </div>
+
+      <!-- Location / Remote (10%) -->
+      <div class="factor-row">
+        <div class="factor-header">
+          <div class="factor-label">
+            <MapPin size={12} class="factor-ic" />
+            <span>Location &amp; Remote (10% weight)</span>
+          </div>
+          <span class="factor-score">{factors.location.score}%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-bar bar-purple" style="width: {factors.location.score}%"></div>
+        </div>
+      </div>
+
+      <!-- Seniority (10%) -->
+      <div class="factor-row">
+        <div class="factor-header">
+          <div class="factor-label">
+            <Award size={12} class="factor-ic" />
+            <span>Seniority Level (10% weight)</span>
+          </div>
+          <span class="factor-score">{factors.seniority.score}%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-bar bar-cyan" style="width: {factors.seniority.score}%"></div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Grounded AI Analysis -->
+  <!-- Matched & Missing Skills Tags -->
+  <div class="skills-diff-section">
+    <div class="skills-col">
+      <span class="diff-title text-emerald">Matched Skills ({factors.skills.matched.length})</span>
+      <div class="tags-wrap">
+        {#each factors.skills.matched as s}
+          <span class="tag-pill tag-matched">
+            <Check size={10} />
+            {s}
+          </span>
+        {/each}
+        {#if factors.skills.matched.length === 0}
+          <span class="text-faint">No exact skill matches</span>
+        {/if}
+      </div>
+    </div>
+
+    <div class="skills-col">
+      <span class="diff-title text-muted">Missing Requirements ({factors.skills.missing.length})</span>
+      <div class="tags-wrap">
+        {#each factors.skills.missing as s}
+          <span class="tag-pill tag-missing">
+            <X size={10} />
+            {s}
+          </span>
+        {/each}
+        {#if factors.skills.missing.length === 0}
+          <span class="text-emerald">All required skills matched!</span>
+        {/if}
+      </div>
+    </div>
+  </div>
+
+  <!-- Qualitative Fit Analysis -->
   {#if ai}
-    <div class="ai-intelligence-panel">
-      <div class="panel-header">
-        <Bot size={15} class="ai-icon" />
-        <span class="panel-title">Grounded Match Intelligence</span>
+    <div class="fit-analysis-card">
+      <div class="fit-header">
+        <Sparkles size={13} class="text-emerald" />
+        <span class="fit-title">Fit Analysis</span>
       </div>
-      <p class="fit-summary-text">{ai.fitSummary}</p>
+      <p class="fit-summary">{ai.fitSummary}</p>
 
-      <div class="analysis-grid">
-        <!-- Strengths -->
-        <div class="analysis-col">
-          <div class="col-heading text-emerald">
-            <Check size={13} />
-            <span>Key Match Strengths</span>
-          </div>
-          <ul class="clean-bullet-list">
-            {#each ai.keyStrengths as str}
-              <li>{str}</li>
-            {/each}
-          </ul>
+      <div class="notes-grid">
+        <div class="note-box">
+          <span class="note-lbl">Application Angle</span>
+          <p class="note-txt">{ai.recommendedApplicationAngle}</p>
         </div>
-
-        <!-- Considerations / Gaps -->
-        <div class="analysis-col">
-          <div class="col-heading text-amber">
-            <AlertCircle size={13} />
-            <span>Considerations &amp; Gaps</span>
-          </div>
-          <ul class="clean-bullet-list">
-            {#each ai.potentialGaps as gap}
-              <li>{gap}</li>
-            {/each}
-          </ul>
-        </div>
-      </div>
-
-      <!-- Application Strategy -->
-      <div class="strategy-grid">
-        <div class="strategy-card">
-          <div class="strat-header">
-            <Compass size={13} />
-            <span>Recommended Application Angle</span>
-          </div>
-          <p class="strat-content">{ai.recommendedApplicationAngle}</p>
-        </div>
-
-        <div class="strategy-card">
-          <div class="strat-header">
-            <HelpCircle size={13} />
-            <span>Interview Preparation Focus</span>
-          </div>
-          <p class="strat-content">{ai.interviewTip}</p>
+        <div class="note-box">
+          <span class="note-lbl">Interview Focus</span>
+          <p class="note-txt">{ai.interviewTip}</p>
         </div>
       </div>
     </div>
   {/if}
-
-  <!-- Deterministic Breakdown Section (PRD Section 13) -->
-  <div class="factors-container">
-    <div class="factors-header">
-      <span class="factors-title">Deterministic Scoring Breakdown (PRD Section 13)</span>
-    </div>
-
-    <!-- Skills Overlap (40%) -->
-    <div class="factor-item">
-      <div class="factor-title-row">
-        <div class="factor-label">
-          <Cpu size={13} class="factor-ic" />
-          <span>Technical Skills Overlap (40% Weight)</span>
-        </div>
-        <span class="factor-percent">{factors.skills.score}%</span>
-      </div>
-      <div class="factor-progress">
-        <div class="progress-fill fill-emerald" style="width: {factors.skills.score}%"></div>
-      </div>
-      <div class="skills-pill-group">
-        {#each factors.skills.matched as s}
-          <span class="eval-pill pill-matched"><Check size={10} /> {s}</span>
-        {/each}
-        {#each factors.skills.partial as s}
-          <span class="eval-pill pill-partial"><AlertCircle size={10} /> {s} (Partial)</span>
-        {/each}
-        {#each factors.skills.missing as s}
-          <span class="eval-pill pill-missing"><X size={10} /> {s} (Missing)</span>
-        {/each}
-      </div>
-    </div>
-
-    <!-- Experience (20%) -->
-    <div class="factor-item">
-      <div class="factor-title-row">
-        <div class="factor-label">
-          <Calendar size={13} class="factor-ic" />
-          <span>Experience Level (20% Weight)</span>
-        </div>
-        <span class="factor-percent">{factors.experience.score}%</span>
-      </div>
-      <div class="factor-progress">
-        <div class="progress-fill fill-slate" style="width: {factors.experience.score}%"></div>
-      </div>
-      <p class="factor-note">{factors.experience.explanation}</p>
-    </div>
-
-    <!-- Salary (15%) -->
-    <div class="factor-item">
-      <div class="factor-title-row">
-        <div class="factor-label">
-          <DollarSign size={13} class="factor-ic" />
-          <span>Compensation Fit (15% Weight)</span>
-        </div>
-        <span class="factor-percent">{factors.salary.score}%</span>
-      </div>
-      <div class="factor-progress">
-        <div class="progress-fill fill-emerald" style="width: {factors.salary.score}%"></div>
-      </div>
-      <p class="factor-note">{factors.salary.explanation}</p>
-    </div>
-
-    <!-- Location & Remote (10%) -->
-    <div class="factor-item">
-      <div class="factor-title-row">
-        <div class="factor-label">
-          <MapPin size={13} class="factor-ic" />
-          <span>Location &amp; Remote Fit (10% Weight)</span>
-        </div>
-        <span class="factor-percent">{factors.location.score}%</span>
-      </div>
-      <div class="factor-progress">
-        <div class="progress-fill fill-slate" style="width: {factors.location.score}%"></div>
-      </div>
-      <p class="factor-note">{factors.location.explanation}</p>
-    </div>
-
-    <!-- Seniority (10%) -->
-    <div class="factor-item">
-      <div class="factor-title-row">
-        <div class="factor-label">
-          <Award size={13} class="factor-ic" />
-          <span>Seniority &amp; Role Scope (10% Weight)</span>
-        </div>
-        <span class="factor-percent">{factors.seniority.score}%</span>
-      </div>
-      <div class="factor-progress">
-        <div class="progress-fill fill-slate" style="width: {factors.seniority.score}%"></div>
-      </div>
-      <p class="factor-note">{factors.seniority.explanation}</p>
-    </div>
-  </div>
 </div>
 
 <style>
   .breakdown-card {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 12px;
   }
 
-  .score-summary-panel {
-    background: var(--bg-surface-raised);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-md);
-    padding: 14px 18px;
-  }
-
-  .score-header-flex {
+  .factors-section {
     display: flex;
-    align-items: center;
-    gap: 16px;
+    flex-direction: column;
+    gap: 8px;
+    background: var(--bg-input);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
   }
 
-  .score-info {
+  .section-title {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .factors-bars-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .factor-row {
     display: flex;
     flex-direction: column;
     gap: 3px;
   }
 
-  .score-title {
-    font-size: 1.05rem;
-    color: var(--text-primary);
-  }
-
-  .score-calc-desc {
-    font-size: 0.74rem;
-    color: var(--text-muted);
-    line-height: 1.35;
-  }
-
-  .ai-intelligence-panel {
-    background: var(--bg-input);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-md);
-    padding: 14px 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .panel-header {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  :global(.ai-icon) {
-    color: var(--text-secondary);
-  }
-
-  .panel-title {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    letter-spacing: 0.01em;
-  }
-
-  .fit-summary-text {
-    font-size: 0.82rem;
-    color: var(--text-secondary);
-    line-height: 1.45;
-  }
-
-  .analysis-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-
-  .analysis-col {
-    background: var(--bg-surface);
-    border: 1px solid var(--border-faint);
-    border-radius: var(--radius-sm);
-    padding: 10px 12px;
-  }
-
-  .col-heading {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 0.76rem;
-    font-weight: 600;
-    margin-bottom: 6px;
-  }
-
-  .text-emerald { color: #34d399; }
-  .text-amber { color: #fbbf24; }
-
-  .clean-bullet-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .clean-bullet-list li {
-    font-size: 0.74rem;
-    color: var(--text-muted);
-    line-height: 1.35;
-    position: relative;
-    padding-left: 10px;
-  }
-
-  .clean-bullet-list li::before {
-    content: '–';
-    position: absolute;
-    left: 0;
-    color: var(--text-faint);
-  }
-
-  .strategy-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-
-  .strategy-card {
-    background: var(--bg-surface);
-    border: 1px solid var(--border-faint);
-    border-radius: var(--radius-sm);
-    padding: 10px 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .strat-header {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 0.74rem;
-    font-weight: 600;
-    color: var(--text-secondary);
-  }
-
-  .strat-content {
-    font-size: 0.74rem;
-    color: var(--text-muted);
-    line-height: 1.35;
-  }
-
-  .factors-container {
-    background: var(--bg-surface-raised);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-md);
-    padding: 14px 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .factors-header {
-    padding-bottom: 6px;
-    border-bottom: 1px solid var(--border-faint);
-  }
-
-  .factors-title {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--text-primary);
-  }
-
-  .factor-item {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
-
-  .factor-title-row {
+  .factor-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 0.76rem;
+    font-size: 0.72rem;
   }
 
   .factor-label {
@@ -383,77 +198,153 @@
     align-items: center;
     gap: 5px;
     color: var(--text-secondary);
-    font-weight: 500;
   }
 
   :global(.factor-ic) {
     color: var(--text-muted);
   }
 
-  .factor-percent {
+  .factor-score {
     font-family: var(--font-mono);
+    font-size: 0.7rem;
     font-weight: 600;
     color: var(--text-primary);
   }
 
-  .factor-progress {
-    width: 100%;
+  .progress-track {
     height: 4px;
-    background: var(--bg-input);
+    background: var(--bg-surface-raised);
     border-radius: var(--radius-full);
     overflow: hidden;
   }
 
-  .progress-fill {
+  .progress-bar {
     height: 100%;
     border-radius: var(--radius-full);
-    transition: width 0.4s ease-out;
+    transition: width 0.3s ease;
   }
-  .progress-fill.fill-emerald { background: #10b981; }
-  .progress-fill.fill-slate { background: #64748b; }
 
-  .factor-note {
+  .bar-emerald { background: #10b981; }
+  .bar-cyan { background: #38bdf8; }
+  .bar-amber { background: #f59e0b; }
+  .bar-purple { background: #a78bfa; }
+
+  .skills-diff-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .skills-col {
+    background: var(--bg-input);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .diff-title {
     font-size: 0.72rem;
-    color: var(--text-muted);
+    font-weight: 600;
   }
 
-  .skills-pill-group {
+  .tags-wrap {
     display: flex;
     flex-wrap: wrap;
     gap: 4px;
-    margin-top: 2px;
   }
 
-  .eval-pill {
+  .tag-pill {
     display: inline-flex;
     align-items: center;
-    gap: 3px;
-    padding: 1px 6px;
+    gap: 4px;
+    padding: 2px 6px;
     border-radius: var(--radius-xs);
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     font-weight: 500;
   }
 
-  .pill-matched {
+  .tag-matched {
     background: var(--accent-emerald-subtle);
-    color: #34d399;
     border: 1px solid var(--accent-emerald-border);
+    color: #34d399;
   }
 
-  .pill-partial {
-    background: var(--accent-amber-subtle);
-    color: #fbbf24;
-    border: 1px solid var(--accent-amber-border);
+  .tag-missing {
+    background: var(--bg-surface-raised);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-muted);
   }
 
-  .pill-missing {
-    background: var(--accent-rose-subtle);
-    color: #fb7185;
-    border: 1px solid var(--accent-rose-border);
+  .fit-analysis-card {
+    background: var(--bg-input);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
+
+  .fit-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .fit-title {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .fit-summary {
+    font-size: 0.76rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+  }
+
+  .notes-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 2px;
+  }
+
+  .note-box {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-faint);
+    border-radius: var(--radius-xs);
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .note-lbl {
+    font-size: 0.66rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  .note-txt {
+    font-size: 0.72rem;
+    color: var(--text-primary);
+    line-height: 1.35;
+  }
+
+  .text-emerald { color: #34d399; }
+  .text-faint { color: var(--text-faint); font-size: 0.7rem; }
 
   @media (max-width: 640px) {
-    .analysis-grid, .strategy-grid {
+    .skills-diff-section {
+      grid-template-columns: 1fr;
+    }
+    .notes-grid {
       grid-template-columns: 1fr;
     }
   }

@@ -7,6 +7,8 @@
   const filtersStore = jobStore.filters;
   $: filters = $filtersStore;
 
+  let showAdvanced = false;
+
   function togglePlatform(p: string) {
     const current = filters.sourcePlatforms;
     const exists = current.includes(p);
@@ -15,397 +17,297 @@
   }
 </script>
 
-<div class="filters-container glass-panel">
-  <!-- Primary Search & Status Row -->
-  <div class="primary-row">
-    <div class="search-box">
-      <Search size={15} class="search-ic" />
-      <input
-        type="text"
-        class="search-field"
-        placeholder="Filter by role, skills (TypeScript, Svelte, PostgreSQL), or company..."
-        value={filters.searchQuery}
-        on:input={(e) => jobStore.setFilter({ searchQuery: e.currentTarget.value })}
-      />
-      {#if filters.searchQuery}
-        <button class="clear-search-btn" on:click={() => jobStore.setFilter({ searchQuery: '' })}>
-          <X size={13} />
-        </button>
-      {/if}
-    </div>
-
-    <!-- Status Tabs -->
-    <div class="status-segment">
-      {#each ['all', 'new', 'saved', 'reviewed'] as status}
-        <button
-          class="status-tab {filters.statusFilter === status ? 'active' : ''}"
-          on:click={() => jobStore.setFilter({ statusFilter: status as JobFilterState['statusFilter'] })}
-        >
-          {status === 'all' ? 'All Feed' : status.toUpperCase()}
-        </button>
-      {/each}
-    </div>
-  </div>
-
-  <!-- Filter Parameters Grid -->
-  <div class="parameters-grid">
-    <!-- Min Match Score -->
-    <div class="param-cell">
-      <div class="param-label-row">
-        <span class="param-title">Min Match Score</span>
-        <span class="param-value text-emerald">{filters.minMatchScore}%</span>
-      </div>
-      <input
-        type="range"
-        min="40"
-        max="90"
-        step="5"
-        class="range-slider"
-        value={filters.minMatchScore}
-        on:input={(e) => jobStore.setFilter({ minMatchScore: Number(e.currentTarget.value) })}
-      />
-    </div>
-
-    <!-- Min Salary -->
-    <div class="param-cell">
-      <div class="param-label-row">
-        <span class="param-title">Minimum Salary</span>
-      </div>
-      <select
-        class="input-select"
-        value={filters.minSalaryIDR}
-        on:change={(e) => jobStore.setFilter({ minSalaryIDR: Number(e.currentTarget.value) })}
+<div class="filters-toolbar">
+  <!-- Primary Search Input -->
+  <div class="search-wrap">
+    <Search size={14} class="search-icon" />
+    <input
+      type="text"
+      class="search-input"
+      placeholder="Search role, skills, company..."
+      value={filters.searchQuery}
+      on:input={(e) => jobStore.setFilter({ searchQuery: e.currentTarget.value })}
+    />
+    {#if filters.searchQuery}
+      <button
+        type="button"
+        class="clear-btn"
+        on:click={() => jobStore.setFilter({ searchQuery: '' })}
+        aria-label="Clear search"
       >
-        <option value={0}>Any Compensation</option>
-        <option value={15000000}>Rp 15,000,000+ / mo</option>
-        <option value={20000000}>Rp 20,000,000+ / mo</option>
-        <option value={25000000}>Rp 25,000,000+ / mo</option>
-        <option value={35000000}>Rp 35,000,000+ / mo</option>
-      </select>
-    </div>
+        <X size={12} />
+      </button>
+    {/if}
+  </div>
 
-    <!-- Remote Checkbox -->
-    <div class="param-cell checkbox-cell">
-      <label class="remote-toggle-label">
-        <input
-          type="checkbox"
-          checked={filters.remoteOnly}
-          on:change={(e) => jobStore.setFilter({ remoteOnly: e.currentTarget.checked })}
-        />
-        <div class="custom-checkbox">
-          {#if filters.remoteOnly}
-            <Check size={11} />
-          {/if}
-        </div>
-        <div class="toggle-text">
-          <span class="toggle-title">Remote Only</span>
-          <span class="toggle-desc">Show 100% remote</span>
-        </div>
-      </label>
-    </div>
-
-    <!-- Sort Order -->
-    <div class="param-cell">
-      <div class="param-label-row">
-        <span class="param-title">Sort By</span>
-      </div>
-      <select
-        class="input-select"
-        value={filters.sortBy}
-        on:change={(e) => jobStore.setFilter({ sortBy: e.currentTarget.value as JobFilterState['sortBy'] })}
+  <!-- Status Filter Pills -->
+  <div class="quick-status-tabs">
+    {#each ['all', 'new', 'saved'] as status}
+      <button
+        type="button"
+        class="status-chip {filters.statusFilter === status ? 'active' : ''}"
+        on:click={() => jobStore.setFilter({ statusFilter: status as JobFilterState['statusFilter'] })}
       >
-        <option value="match">Match Score (Highest)</option>
-        <option value="recent">Discovered Date</option>
-        <option value="salary">Compensation (Highest)</option>
-      </select>
-    </div>
+        {status === 'all' ? 'All' : status.charAt(0).toUpperCase() + status.slice(1)}
+      </button>
+    {/each}
+
+    <!-- Remote Quick Toggle -->
+    <button
+      type="button"
+      class="status-chip {filters.remoteOnly ? 'active' : ''}"
+      on:click={() => jobStore.setFilter({ remoteOnly: !filters.remoteOnly })}
+    >
+      Remote
+    </button>
+
+    <!-- Filter Drawer Toggle -->
+    <button
+      type="button"
+      class="status-chip filter-btn {showAdvanced ? 'active' : ''}"
+      on:click={() => (showAdvanced = !showAdvanced)}
+      title="Advanced Filters"
+    >
+      <SlidersHorizontal size={11} />
+      <span>{filters.minMatchScore}%+</span>
+    </button>
   </div>
 
-  <!-- Source Platforms Filter Row -->
-  <div class="sources-row">
-    <span class="sources-title">Sources:</span>
-    <div class="sources-chips">
-      {#each platforms as platform}
-        {@const selected = filters.sourcePlatforms.includes(platform)}
-        <button
-          class="source-chip {selected ? 'selected' : ''}"
-          on:click={() => togglePlatform(platform)}
-        >
-          {platform}
-        </button>
-      {/each}
-      {#if filters.sourcePlatforms.length > 0}
-        <button class="clear-sources-btn" on:click={() => jobStore.setFilter({ sourcePlatforms: [] })}>
-          Reset
-        </button>
-      {/if}
+  <!-- Collapsible Advanced Drawer -->
+  {#if showAdvanced}
+    <div class="advanced-drawer">
+      <div class="drawer-row">
+        <div class="drawer-field">
+          <label for="min-match-slider" class="drawer-lbl">
+            Min Match: <strong class="text-emerald">{filters.minMatchScore}%</strong>
+          </label>
+          <input
+            id="min-match-slider"
+            type="range"
+            min="40"
+            max="90"
+            step="5"
+            class="range-slider"
+            value={filters.minMatchScore}
+            on:input={(e) => jobStore.setFilter({ minMatchScore: Number(e.currentTarget.value) })}
+          />
+        </div>
+
+        <div class="drawer-field">
+          <label for="min-salary-select" class="drawer-lbl">Min Salary</label>
+          <select
+            id="min-salary-select"
+            class="input-select select-compact"
+            value={filters.minSalaryIDR}
+            on:change={(e) => jobStore.setFilter({ minSalaryIDR: Number(e.currentTarget.value) })}
+          >
+            <option value={0}>Any</option>
+            <option value={15000000}>15M+ IDR</option>
+            <option value={20000000}>20M+ IDR</option>
+            <option value={25000000}>25M+ IDR</option>
+            <option value={35000000}>35M+ IDR</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="drawer-platforms">
+        <span class="drawer-lbl">Sources:</span>
+        <div class="platform-chips">
+          {#each platforms as plat}
+            {@const isSelected = filters.sourcePlatforms.length === 0 || filters.sourcePlatforms.includes(plat)}
+            <button
+              type="button"
+              class="plat-pill {isSelected ? 'plat-on' : 'plat-off'}"
+              on:click={() => togglePlatform(plat)}
+            >
+              {plat}
+            </button>
+          {/each}
+        </div>
+      </div>
     </div>
-  </div>
+  {/if}
 </div>
 
 <style>
-  .filters-container {
-    padding: 14px 18px;
-    margin-bottom: 16px;
+  .filters-toolbar {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    flex-shrink: 0;
   }
 
-  .primary-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .search-box {
+  .search-wrap {
     position: relative;
-    flex: 1;
     display: flex;
     align-items: center;
+    width: 100%;
   }
 
-  :global(.search-ic) {
+  :global(.search-icon) {
     position: absolute;
-    left: 11px;
+    left: 8px;
     color: var(--text-muted);
     pointer-events: none;
   }
 
-  .search-field {
+  .search-input {
     width: 100%;
     background: var(--bg-input);
     border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-sm);
-    padding: 7px 32px 7px 34px;
+    border-radius: var(--radius-xs);
+    padding: 5px 28px 5px 26px;
     color: var(--text-primary);
-    font-size: 0.84rem;
+    font-size: 0.78rem;
     outline: none;
     transition: border-color var(--transition-fast);
   }
-
-  .search-field:focus {
+  .search-input:focus {
     border-color: var(--border-focus);
   }
 
-  .clear-search-btn {
+  .clear-btn {
     position: absolute;
-    right: 8px;
+    right: 6px;
     background: transparent;
     border: none;
     color: var(--text-muted);
     cursor: pointer;
-    display: flex;
-  }
-  .clear-search-btn:hover {
-    color: var(--text-primary);
-  }
-
-  .status-segment {
-    display: flex;
-    background: var(--bg-input);
-    border: 1px solid var(--border-subtle);
-    padding: 2px;
-    border-radius: var(--radius-sm);
-    gap: 2px;
-  }
-
-  .status-tab {
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    font-size: 0.74rem;
-    font-weight: 500;
-    padding: 4px 10px;
-    border-radius: var(--radius-xs);
-    cursor: pointer;
-    transition: all var(--transition-fast);
-  }
-
-  .status-tab:hover {
-    color: var(--text-primary);
-  }
-
-  .status-tab.active {
-    background: var(--bg-surface-raised);
-    color: var(--text-primary);
-    font-weight: 600;
-  }
-
-  .parameters-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    padding-top: 10px;
-    border-top: 1px solid var(--border-faint);
-  }
-
-  .param-cell {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .param-label-row {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    font-size: 0.72rem;
+    padding: 2px;
+  }
+  .clear-btn:hover {
+    color: var(--text-primary);
   }
 
-  .param-title {
+  .quick-status-tabs {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+
+  .status-chip {
+    padding: 2px 7px;
+    background: var(--bg-input);
+    border: 1px solid var(--border-faint);
+    border-radius: var(--radius-xs);
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: all var(--transition-fast);
+  }
+  .status-chip:hover {
+    color: var(--text-primary);
+    border-color: var(--border-subtle);
+  }
+  .status-chip.active {
+    background: var(--bg-surface-raised);
+    color: var(--text-primary);
+    border-color: var(--border-strong);
+    font-weight: 500;
+  }
+
+  .filter-btn {
+    margin-left: auto;
+    font-family: var(--font-mono);
+  }
+
+  .advanced-drawer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border-faint);
+    margin-top: 2px;
+  }
+
+  .drawer-row {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .drawer-field {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .drawer-lbl {
+    font-size: 0.68rem;
     color: var(--text-muted);
     font-weight: 500;
   }
 
-  .param-value {
-    font-family: var(--font-mono);
-    font-weight: 600;
+  .select-compact {
+    padding: 3px 6px;
+    font-size: 0.72rem;
+    height: 26px;
   }
 
   .range-slider {
     -webkit-appearance: none;
     appearance: none;
     width: 100%;
-    height: 4px;
+    height: 3px;
     border-radius: var(--radius-full);
     background: var(--border-subtle);
     outline: none;
     cursor: pointer;
-    margin-top: 6px;
   }
-
   .range-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 13px;
-    height: 13px;
+    width: 11px;
+    height: 11px;
     border-radius: 50%;
     background: #ffffff;
     cursor: pointer;
   }
 
-  .checkbox-cell {
-    justify-content: flex-end;
-  }
-
-  .remote-toggle-label {
+  .drawer-platforms {
     display: flex;
     align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    user-select: none;
-    padding-top: 4px;
-  }
-
-  .remote-toggle-label input {
-    display: none;
-  }
-
-  .custom-checkbox {
-    width: 16px;
-    height: 16px;
-    border-radius: 3px;
-    background: var(--bg-input);
-    border: 1px solid var(--border-subtle);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #34d399;
-  }
-
-  .remote-toggle-label input:checked + .custom-checkbox {
-    background: var(--accent-emerald-subtle);
-    border-color: var(--accent-emerald-border);
-  }
-
-  .toggle-text {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .toggle-title {
-    font-size: 0.76rem;
-    font-weight: 500;
-    color: var(--text-primary);
-  }
-
-  .toggle-desc {
-    font-size: 0.68rem;
-    color: var(--text-muted);
-  }
-
-  .sources-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.74rem;
-    padding-top: 8px;
-    border-top: 1px solid var(--border-faint);
-  }
-
-  .sources-title {
-    color: var(--text-muted);
-    font-size: 0.72rem;
-  }
-
-  .sources-chips {
-    display: flex;
-    align-items: center;
+    gap: 6px;
     flex-wrap: wrap;
-    gap: 5px;
   }
 
-  .source-chip {
-    background: transparent;
-    border: 1px solid var(--border-subtle);
-    color: var(--text-secondary);
-    padding: 2px 7px;
-    border-radius: var(--radius-xs);
-    font-size: 0.7rem;
+  .platform-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .plat-pill {
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 0.66rem;
     cursor: pointer;
     transition: all var(--transition-fast);
+    border: 1px solid transparent;
   }
-
-  .source-chip:hover {
-    border-color: var(--border-strong);
+  .plat-on {
+    background: var(--bg-surface-raised);
     color: var(--text-primary);
+    border-color: var(--border-subtle);
   }
-
-  .source-chip.selected {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.25);
-    color: var(--text-primary);
-    font-weight: 600;
-  }
-
-  .clear-sources-btn {
+  .plat-off {
     background: transparent;
-    border: none;
-    color: var(--text-muted);
-    font-size: 0.7rem;
-    cursor: pointer;
-    text-decoration: underline;
-    margin-left: 4px;
+    color: var(--text-faint);
+    border-color: var(--border-faint);
   }
 
   .text-emerald {
     color: #34d399;
-  }
-
-  @media (max-width: 900px) {
-    .parameters-grid {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-
-  @media (max-width: 600px) {
-    .primary-row {
-      flex-direction: column;
-      align-items: stretch;
-    }
-    .parameters-grid {
-      grid-template-columns: 1fr;
-    }
   }
 </style>

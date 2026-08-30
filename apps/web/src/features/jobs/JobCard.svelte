@@ -1,24 +1,15 @@
 <script lang="ts">
   import type { Job } from '@sagasu/api-contract';
   import { jobStore } from '$lib/stores/jobStore';
-  import { applicationStore } from '$lib/stores/applicationStore';
-  import MatchScoreBadge from './MatchScoreBadge.svelte';
   import {
-    MapPin,
     Bookmark,
-    Sparkles,
-    Check,
-    X,
-    ExternalLink,
-    Layers,
-    Bot
+    Layers
   } from 'lucide-svelte';
 
   export let job: Job;
+  export let isSelected = false;
 
   $: isSaved = job.status === 'saved';
-  $: matchedSkills = job.matchResult?.factors?.skills?.matched || [];
-  $: missingSkills = job.matchResult?.factors?.skills?.missing || [];
   $: dedupCount = job.deduplicationSources?.length || 1;
 
   function getMonogram(name: string): string {
@@ -32,284 +23,226 @@
   function formatSalary(j: Job) {
     if (!j.salary) return null;
     const { min, max, currency, period } = j.salary;
-    const perLabel = period === 'month' ? '/ mo' : period === 'year' ? '/ yr' : '';
+    const perLabel = period === 'month' ? '/mo' : period === 'year' ? '/yr' : '';
     if (currency === 'IDR') {
       const minM = min ? (min / 1000000).toFixed(0) : '';
       const maxM = max ? (max / 1000000).toFixed(0) : '';
-      if (minM && maxM) return `Rp ${minM}M – ${maxM}M ${perLabel}`;
+      if (minM && maxM) return `Rp ${minM}M–${maxM}M ${perLabel}`;
       if (minM) return `From Rp ${minM}M ${perLabel}`;
       if (maxM) return `Up to Rp ${maxM}M ${perLabel}`;
     }
-    return `${currency} ${min?.toLocaleString() || ''} – ${max?.toLocaleString() || ''} ${perLabel}`;
+    return `${currency} ${min?.toLocaleString() || ''} ${perLabel}`;
   }
 </script>
 
-<div class="job-card glass-panel {job.matchScore >= 85 ? 'card-high-match' : ''}">
-  <!-- Top Header Row -->
-  <div class="card-header">
-    <div class="company-group">
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore a11y_no_static_element_interactions -->
+<div
+  class="job-item {isSelected ? 'selected' : ''}"
+  on:click={() => jobStore.selectJob(job.id)}
+>
+  <div class="item-header">
+    <div class="header-left">
       <div class="company-monogram">
         <span>{getMonogram(job.company)}</span>
       </div>
-      <div class="title-col">
-        <button
-          type="button"
-          class="job-title-btn"
-          on:click={() => jobStore.selectJob(job.id)}
-        >
-          {job.title}
-        </button>
-        <div class="company-meta">
+      <div class="title-meta">
+        <h4 class="job-title">{job.title}</h4>
+        <div class="sub-meta">
           <span class="company-name">{job.company}</span>
-          <span class="dot-sep">•</span>
-          <span class="location-txt">
-            <MapPin size={11} />
-            {job.location}
-          </span>
+          <span class="dot">•</span>
+          <span class="location-txt">{job.location}</span>
           {#if job.remote}
-            <span class="badge badge-emerald">Remote</span>
+            <span class="badge-mini badge-emerald">Remote</span>
           {/if}
-          <span class="badge badge-neutral">{job.employmentType}</span>
         </div>
       </div>
     </div>
 
-    <!-- Match Score -->
-    <div class="score-container">
-      <MatchScoreBadge score={job.matchScore} size="md" />
+    <!-- Match Badge -->
+    <div class="score-pill {job.matchScore >= 80 ? 'score-high' : 'score-mid'}">
+      <span>{job.matchScore}%</span>
     </div>
   </div>
 
-  <!-- Salary & Sources Meta Row -->
-  <div class="meta-row">
-    {#if formatSalary(job)}
-      <div class="salary-pill">
-        <span class="salary-text">{formatSalary(job)}</span>
-      </div>
-    {/if}
-
-    <div class="source-info">
-      <span class="source-tag">Via {job.sourcePlatform}</span>
+  <!-- Meta Row: Salary, Source & Top Matched Skills -->
+  <div class="item-footer">
+    <div class="footer-left">
+      {#if formatSalary(job)}
+        <span class="salary-tag">{formatSalary(job)}</span>
+      {/if}
+      <span class="source-tag">{job.sourcePlatform}</span>
       {#if dedupCount > 1}
-        <span class="dedup-tag" title="Aggregated from multiple external sources">
-          <Layers size={11} />
-          {dedupCount} sources
+        <span class="dedup-tag">
+          <Layers size={10} />
+          {dedupCount}
         </span>
       {/if}
     </div>
-  </div>
 
-  <!-- Matched & Missing Skills Chips -->
-  <div class="skills-row">
-    <div class="skills-list">
-      {#each matchedSkills.slice(0, 5) as skill}
-        <span class="skill-pill matched">
-          <Check size={10} /> {skill}
-        </span>
-      {/each}
-      {#each missingSkills.slice(0, 2) as skill}
-        <span class="skill-pill missing">
-          <X size={10} /> {skill}
-        </span>
-      {/each}
-      {#if job.skills.length > 7}
-        <span class="more-skills-txt">+{job.skills.length - 7} more</span>
-      {/if}
-    </div>
-  </div>
-
-  <!-- Grounded AI Fit Summary -->
-  {#if job.matchResult?.aiAnalysis}
-    <div class="ai-summary-callout">
-      <Bot size={13} class="ai-bot-ic" />
-      <span class="ai-fit-txt">{job.matchResult.aiAnalysis.fitSummary}</span>
-    </div>
-  {/if}
-
-  <!-- Footer Actions -->
-  <div class="card-footer">
-    <div class="actions-left">
-      <button
-        type="button"
-        class="btn btn-secondary btn-sm"
-        on:click={() => jobStore.selectJob(job.id)}
-      >
-        <span>Match Breakdown</span>
-      </button>
-      <a
-        href={job.sourceUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="btn btn-ghost btn-sm ext-link"
-      >
-        <span>Source</span>
-        <ExternalLink size={11} />
-      </a>
-    </div>
-
-    <div class="actions-right">
-      <button
-        type="button"
-        class="btn btn-ghost btn-sm save-btn {isSaved ? 'is-saved' : ''}"
-        on:click={() => jobStore.saveJob(job.id)}
-        title={isSaved ? 'Saved to bookmarks' : 'Save opportunity'}
-      >
-        <Bookmark size={13} class={isSaved ? 'icon-filled' : ''} />
-        <span>{isSaved ? 'Saved' : 'Save'}</span>
-      </button>
-
-      <button
-        type="button"
-        class="btn btn-emerald btn-sm"
-        on:click={() => applicationStore.openStudioForJob(job)}
-      >
-        <Sparkles size={12} />
-        <span>Prepare Application</span>
-      </button>
-    </div>
+    <!-- Quick Bookmark Action -->
+    <button
+      type="button"
+      class="bookmark-btn {isSaved ? 'saved' : ''}"
+      on:click|stopPropagation={() => isSaved ? jobStore.updateJobStatus(job.id, 'new') : jobStore.saveJob(job.id)}
+      title={isSaved ? 'Remove from saved' : 'Save job'}
+      aria-label="Bookmark"
+    >
+      <Bookmark size={13} fill={isSaved ? 'currentColor' : 'none'} />
+    </button>
   </div>
 </div>
 
 <style>
-  .job-card {
-    padding: 16px 18px;
-    margin-bottom: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  .job-item {
+    padding: 10px 12px;
     background: var(--bg-surface);
     border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
     transition: all var(--transition-fast);
   }
 
-  .job-card:hover {
+  .job-item:hover {
     border-color: var(--border-strong);
     background: var(--bg-surface-raised);
   }
 
-  .card-high-match {
-    border-left: 3px solid var(--accent-emerald);
+  .job-item.selected {
+    border-color: rgba(255, 255, 255, 0.3);
+    background: var(--bg-surface-raised);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15);
   }
 
-  .card-header {
+  .item-header {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 14px;
+    gap: 10px;
   }
 
-  .company-group {
+  .header-left {
     display: flex;
-    align-items: flex-start;
-    gap: 12px;
+    align-items: center;
+    gap: 8px;
     flex: 1;
+    min-width: 0;
   }
 
   .company-monogram {
-    width: 36px;
-    height: 36px;
-    border-radius: var(--radius-sm);
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-xs);
     background: var(--bg-input);
     border: 1px solid var(--border-subtle);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: var(--font-mono);
+    font-size: 0.72rem;
     font-weight: 700;
-    font-size: 0.82rem;
+    font-family: var(--font-mono);
     color: var(--text-primary);
-    letter-spacing: 0.05em;
     flex-shrink: 0;
   }
 
-  .title-col {
+  .title-meta {
+    flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 1px;
   }
 
-  .job-title-btn {
-    background: transparent;
-    border: none;
-    padding: 0;
-    text-align: left;
-    font-family: var(--font-sans);
-    font-size: 0.98rem;
+  .job-title {
+    font-size: 0.84rem;
     font-weight: 600;
     color: var(--text-primary);
-    cursor: pointer;
-    line-height: 1.3;
-    transition: opacity var(--transition-fast);
-  }
-  .job-title-btn:hover {
-    opacity: 0.8;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
   }
 
-  .company-meta {
+  .sub-meta {
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
-    gap: 6px;
-    font-size: 0.76rem;
-    color: var(--text-secondary);
-  }
-
-  .company-name {
-    font-weight: 500;
-    color: var(--text-primary);
-  }
-
-  .location-txt {
-    display: flex;
-    align-items: center;
-    gap: 3px;
-  }
-
-  .dot-sep {
-    color: var(--border-subtle);
-  }
-
-  .score-container {
-    display: flex;
-    align-items: center;
-  }
-
-  .meta-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .salary-pill {
-    background: var(--accent-emerald-subtle);
-    border: 1px solid var(--accent-emerald-border);
-    padding: 2px 7px;
-    border-radius: var(--radius-xs);
-  }
-
-  .salary-text {
-    color: #34d399;
-    font-family: var(--font-mono);
-    font-weight: 600;
-    font-size: 0.76rem;
-  }
-
-  .source-info {
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    gap: 4px;
     font-size: 0.72rem;
     color: var(--text-muted);
   }
 
-  .source-tag {
-    background: var(--bg-input);
-    border: 1px solid var(--border-faint);
-    padding: 1px 6px;
+  .company-name {
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  .dot {
+    color: var(--text-faint);
+  }
+
+  .location-txt {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 130px;
+  }
+
+  .badge-mini {
+    padding: 1px 4px;
+    font-size: 0.64rem;
+    border-radius: 2px;
+    line-height: 1.2;
+  }
+
+  .score-pill {
+    padding: 2px 6px;
     border-radius: var(--radius-xs);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .score-high {
+    background: var(--accent-emerald-subtle);
+    color: #34d399;
+    border: 1px solid var(--accent-emerald-border);
+  }
+
+  .score-mid {
+    background: var(--bg-input);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-subtle);
+  }
+
+  .item-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding-top: 4px;
+    border-top: 1px solid var(--border-faint);
+  }
+
+  .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.7rem;
+    flex-wrap: wrap;
+  }
+
+  .salary-tag {
+    color: #34d399;
+    font-weight: 600;
+    font-family: var(--font-mono);
+  }
+
+  .source-tag {
+    color: var(--text-faint);
   }
 
   .dedup-tag {
@@ -322,96 +255,5 @@
     border-radius: var(--radius-xs);
     border: 1px solid var(--border-faint);
     font-size: 0.7rem;
-  }
-
-  .skills-row {
-    display: flex;
-    align-items: center;
-  }
-
-  .skills-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    align-items: center;
-  }
-
-  .skill-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
-    padding: 2px 6px;
-    border-radius: var(--radius-xs);
-    font-size: 0.7rem;
-    font-weight: 500;
-  }
-
-  .skill-pill.matched {
-    background: var(--accent-emerald-subtle);
-    color: #34d399;
-    border: 1px solid var(--accent-emerald-border);
-  }
-
-  .skill-pill.missing {
-    background: var(--accent-rose-subtle);
-    color: #fb7185;
-    border: 1px solid var(--accent-rose-border);
-  }
-
-  .more-skills-txt {
-    font-size: 0.68rem;
-    color: var(--text-muted);
-  }
-
-  .ai-summary-callout {
-    display: flex;
-    align-items: flex-start;
-    gap: 7px;
-    background: var(--bg-input);
-    border: 1px solid var(--border-faint);
-    padding: 6px 10px;
-    border-radius: var(--radius-sm);
-    font-size: 0.76rem;
-    color: var(--text-secondary);
-    line-height: 1.4;
-  }
-
-  :global(.ai-bot-ic) {
-    color: var(--text-muted);
-    flex-shrink: 0;
-    margin-top: 2px;
-  }
-
-  .card-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-top: 8px;
-    border-top: 1px solid var(--border-faint);
-    gap: 10px;
-  }
-
-  .actions-left, .actions-right {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .save-btn.is-saved {
-    color: #fbbf24;
-  }
-
-  :global(.icon-filled) {
-    fill: currentColor;
-  }
-
-  @media (max-width: 640px) {
-    .card-footer {
-      flex-direction: column;
-      align-items: stretch;
-    }
-    .actions-left, .actions-right {
-      justify-content: space-between;
-    }
   }
 </style>
