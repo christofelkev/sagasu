@@ -10,6 +10,7 @@ export const healthController = new Elysia({ prefix: '/health' })
         dbStatus = 'connected';
       }
     } catch (err) {
+      console.error('Health check DB error:', err);
       dbStatus = 'error';
     }
 
