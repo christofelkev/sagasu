@@ -8,6 +8,7 @@ import type {
 import { initialApplications } from '../mock/initialData';
 import { toasts } from './toastStore';
 import { jobStore } from './jobStore';
+import { api } from '../api/client';
 import confetti from 'canvas-confetti';
 
 const STORAGE_KEY = 'sagasu_applications_v1';
@@ -32,6 +33,20 @@ function createApplicationStore() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(apps));
     }
     applications.set(apps);
+  }
+
+  // Hydrate from backend API if available
+  if (typeof window !== 'undefined') {
+    api
+      .getApplications()
+      .then((serverApps) => {
+        if (serverApps && serverApps.length > 0) {
+          saveToStorage(serverApps);
+        }
+      })
+      .catch((err) => {
+        console.info('Backend application sync using cached store:', err.message);
+      });
   }
 
   return {
@@ -98,109 +113,122 @@ Raden Manopo`,
                 rationale: 'Summarizes key qualifications with immediate credibility.'
               }
             ],
-            approvedByUser: false,
-            userNotes: ''
+            interviewPrepNotes: [
+              {
+                topic: 'System Architecture & Concurrency',
+                keyBullets: [
+                  'Explain connection pooling and caching strategies',
+                  'Walk through an end-to-end event flow handling spike loads'
+                ]
+              },
+              {
+                topic: 'Behavioral & Leadership',
+                keyBullets: [
+                  'Describe a critical refactor under tight timeline constraints',
+                  'Give an example of aligning product priorities with engineering quality'
+                ]
+              }
+            ]
           },
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString()
         };
 
-        const next = [newApp, ...currentApps];
-        saveToStorage(next);
-        app = newApp;
+        const updated = [newApp, ...currentApps];
+        saveToStorage(updated);
+        jobStore.updateJobStatus(job.id, 'saved');
+        activePreparingAppId.set(newApp.id);
+        toasts.success('Studio Initialized', `Drafted tailored materials for ${job.company}.`);
+        api.createApplication(job.id, 'PREPARING').catch(() => {});
+      } else {
+        activePreparingAppId.set(app.id);
       }
-
-      activePreparingAppId.set(app.id);
-      jobStore.updateJobStatus(job.id, 'saved');
     },
 
     closeStudio: () => {
       activePreparingAppId.set(null);
     },
 
-    updateMaterials: (appId: string, materials: Partial<PreparedApplicationMaterials>) => {
-      applications.update((curr) => {
-        const next = curr.map((a) => {
-          if (a.id === appId && a.preparedMaterials) {
-            return {
-              ...a,
-              preparedMaterials: { ...a.preparedMaterials, ...materials },
-              updatedAt: new Date().toISOString()
-            };
+    updateStatus: (id: string, newStatus: ApplicationStatus, note?: string) => {
+      applications.update((apps) => {
+        const next = apps.map((app) => {
+          if (app.id !== id) return app;
+
+          const historyItem = {
+            id: `h-${Date.now()}`,
+            status: newStatus,
+            timestamp: new Date().toISOString(),
+            note: note || `Stage updated to ${newStatus}`
+          };
+
+          const updatedApp: Application = {
+            ...app,
+            status: newStatus,
+            statusHistory: [...app.statusHistory, historyItem],
+            updatedAt: new Date().toISOString(),
+            appliedDate: newStatus === 'APPLIED' && !app.appliedDate ? new Date().toISOString() : app.appliedDate
+          };
+
+          if (newStatus === 'OFFER') {
+            try {
+              confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+            } catch {}
+            toasts.success('Congratulations!', `Offer received for ${app.job.title} at ${app.job.company}!`);
+          } else if (newStatus === 'APPLIED') {
+            toasts.success('Application Submitted', `Marked as applied to ${app.job.company}.`);
+            jobStore.updateJobStatus(app.jobId, 'applied');
+          } else {
+            toasts.info('Status Updated', `Moved ${app.job.company} to ${newStatus}`);
           }
-          return a;
+
+          api.updateApplication(id, { status: newStatus }).catch(() => {});
+          return updatedApp;
         });
+
         saveToStorage(next);
         return next;
       });
     },
 
-    updateStatus: (appId: string, nextStatus: ApplicationStatus, note?: string) => {
-      applications.update((curr) => {
-        const next = curr.map((a) => {
-          if (a.id === appId) {
-            const historyEvent = {
-              id: `h-${Date.now()}`,
-              status: nextStatus,
-              timestamp: new Date().toISOString(),
-              note: note || `Status updated to ${nextStatus}`
-            };
-
-            const updated: Application = {
-              ...a,
-              status: nextStatus,
-              statusHistory: [...a.statusHistory, historyEvent],
-              updatedAt: new Date().toISOString()
-            };
-
-            if (nextStatus === 'APPLIED') {
-              updated.appliedDate = new Date().toISOString().split('T')[0];
-              if (updated.preparedMaterials) {
-                updated.preparedMaterials.approvedByUser = true;
-              }
-              // Trigger confetti celebration!
-              try {
-                confetti({
-                  particleCount: 80,
-                  spread: 60,
-                  origin: { y: 0.6 }
-                });
-              } catch (e) {}
-              toasts.success('Application Submitted!', `Successfully logged application to ${a.job.company}.`);
-            } else if (nextStatus === 'OFFER') {
-              try {
-                confetti({
-                  particleCount: 150,
-                  spread: 100,
-                  origin: { y: 0.5 }
-                });
-              } catch (e) {}
-              toasts.success('🎉 Offer Received!', `Congratulations on the offer from ${a.job.company}!`);
-            } else {
-              toasts.info('Status Updated', `Moved to ${nextStatus}`);
-            }
-
-            return updated;
-          }
-          return a;
+    updateMaterials: (id: string, materials: Partial<PreparedApplicationMaterials>) => {
+      applications.update((apps) => {
+        const next = apps.map((app) => {
+          if (app.id !== id) return app;
+          const updated: Application = {
+            ...app,
+            preparedMaterials: {
+              ...(app.preparedMaterials || {
+                tailoredResume: { headline: '', summary: '', targetedBulletPoints: [] },
+                coverLetter: '',
+                recruiterMessage: '',
+                applicationQuestionsAnswers: [],
+                interviewPrepNotes: []
+              }),
+              ...materials
+            },
+            updatedAt: new Date().toISOString()
+          };
+          api.updateApplication(id, { preparedMaterials: updated.preparedMaterials }).catch(() => {});
+          return updated;
         });
         saveToStorage(next);
+        toasts.success('Materials Saved', 'Customizations updated.');
         return next;
       });
     },
 
-    deleteApplication: (appId: string) => {
-      applications.update((curr) => {
-        const next = curr.filter((a) => a.id !== appId);
+    deleteApplication: (id: string) => {
+      applications.update((apps) => {
+        const next = apps.filter((a) => a.id !== id);
         saveToStorage(next);
-        toasts.info('Application Removed', 'Application record deleted.');
+        toasts.info('Removed', 'Application removed from tracking pipeline.');
         return next;
       });
     },
 
     resetToDefault: () => {
       saveToStorage(initialApplications);
-      toasts.info('Applications Reset', 'Restored default application pipeline.');
+      toasts.info('Pipeline Reset', 'Restored demo application pipeline.');
     }
   };
 }

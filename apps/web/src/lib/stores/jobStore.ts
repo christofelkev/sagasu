@@ -4,6 +4,7 @@ import { initialJobs } from '../mock/initialData';
 import { profileStore } from './profileStore';
 import { calculateMatch } from '../matching/matchingEngine';
 import { toasts } from './toastStore';
+import { api } from '../api/client';
 
 const STORAGE_KEY = 'sagasu_jobs_v1';
 
@@ -32,6 +33,7 @@ function createJobStore() {
   const jobs = writable<Job[]>(getStoredJobs());
   const isSyncing = writable<boolean>(false);
   const selectedJobId = writable<string | null>(null);
+  const isApiConnected = writable<boolean>(false);
 
   const filters = writable<JobFilterState>({
     searchQuery: '',
@@ -66,6 +68,21 @@ function createJobStore() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
     }
     jobs.set(items);
+  }
+
+  // Hydrate from backend API if available
+  if (typeof window !== 'undefined') {
+    api
+      .getJobs({ limit: 100 })
+      .then((res) => {
+        if (res.items && res.items.length > 0) {
+          saveToStorage(res.items);
+          isApiConnected.set(true);
+        }
+      })
+      .catch((err) => {
+        console.info('Backend API offline or unreachable, using cached store:', err.message);
+      });
   }
 
   // Derived filtered jobs
@@ -132,6 +149,7 @@ function createJobStore() {
     filters,
     isSyncing,
     selectedJobId,
+    isApiConnected,
 
     setFilter: (patch: Partial<JobFilterState>) => {
       filters.update((f) => ({ ...f, ...patch }));
@@ -157,6 +175,7 @@ function createJobStore() {
         toasts.success('Job Saved', 'Added to your bookmarked opportunities.');
         return next;
       });
+      api.saveJob(id).catch((err) => console.warn('Backend saveJob sync failed:', err.message));
     },
     rejectJob: (id: string) => {
       jobs.update((curr) => {
@@ -165,6 +184,7 @@ function createJobStore() {
         toasts.info('Job Dismissed', 'Listing hidden from primary discovery feed.');
         return next;
       });
+      api.rejectJob(id).catch((err) => console.warn('Backend rejectJob sync failed:', err.message));
     },
     markReviewed: (id: string) => {
       jobs.update((curr) => {
@@ -172,6 +192,7 @@ function createJobStore() {
         saveToStorage(next);
         return next;
       });
+      api.reviewJob(id).catch((err) => console.warn('Backend reviewJob sync failed:', err.message));
     },
     updateJobStatus: (id: string, status: Job['status']) => {
       jobs.update((curr) => {
@@ -179,62 +200,31 @@ function createJobStore() {
         saveToStorage(next);
         return next;
       });
+      if (status === 'saved') api.saveJob(id).catch(() => {});
+      else if (status === 'rejected') api.rejectJob(id).catch(() => {});
+      else if (status === 'reviewed') api.reviewJob(id).catch(() => {});
     },
     syncSources: async () => {
       isSyncing.set(true);
       toasts.info('Job Collector Running', 'Querying active adapters (LinkedIn, Glints, TechInAsia, RemoteOK)...', 2500);
 
-      // Simulate network & normalization pipeline delay
-      await new Promise((resolve) => setTimeout(resolve, 1800));
+      try {
+        const res = await api.getJobs({ limit: 100 });
+        if (res.items && res.items.length > 0) {
+          saveToStorage(res.items);
+          isApiConnected.set(true);
+          isSyncing.set(false);
+          toasts.success('Sync Complete', `Synchronized ${res.items.length} opportunities from PostgreSQL.`);
+          return;
+        }
+      } catch (e) {
+        console.warn('API sync fallback to local simulation');
+      }
 
-      const newDiscoveredJob: Job = {
-        id: `job-sync-${Date.now()}`,
-        title: 'Senior Frontend / UI Engineer (SvelteKit)',
-        company: 'Linear Labs Partner',
-        companyLogo: '⚡',
-        location: 'Remote (Worldwide)',
-        remote: true,
-        employmentType: 'Full-time',
-        description: 'Building world-class high-density interfaces for developer issue tracking. Fast, accessible, keyboard-first web applications.',
-        requirements: [
-          '4+ years building responsive web interfaces with TypeScript & Svelte/React',
-          'Obsession with UI micro-interactions, CSS, and 60fps animations',
-          'Experience building offline-first or optimistic state architectures'
-        ],
-        responsibilities: [
-          'Deliver keyboard shortcuts and instantaneous optimistic UI interactions',
-          'Collaborate directly with designers on custom canvas and DOM rendering components'
-        ],
-        skills: ['TypeScript', 'Svelte / SvelteKit', 'Tailwind & Vanilla CSS', 'REST & GraphQL APIs'],
-        salary: { min: 38000000, max: 52000000, currency: 'IDR', period: 'month' },
-        postedAt: new Date().toISOString(),
-        collectedAt: new Date().toISOString(),
-        sourceUrl: 'https://linear.app/careers',
-        sourcePlatform: 'Company Careers',
-        deduplicationSources: [
-          { platform: 'Company Careers', sourceUrl: 'https://linear.app/careers', externalId: 'lin-99', fetchedAt: new Date().toISOString() },
-          { platform: 'LinkedIn', sourceUrl: 'https://linkedin.com/jobs/view/9922', externalId: 'li-9922', fetchedAt: new Date().toISOString() }
-        ],
-        matchScore: 96,
-        matchResult: calculateMatch(
-          {
-            title: 'Senior Frontend / UI Engineer (SvelteKit)',
-            skills: ['TypeScript', 'Svelte / SvelteKit', 'Tailwind & Vanilla CSS'],
-            remote: true
-          },
-          get(profileStore)
-        ),
-        status: 'new'
-      };
-
-      jobs.update((curr) => {
-        const next = [newDiscoveredJob, ...curr];
-        saveToStorage(next);
-        return next;
-      });
-
+      // Fallback simulation
+      await new Promise((resolve) => setTimeout(resolve, 1400));
       isSyncing.set(false);
-      toasts.success('Sync Complete', '1 new high-match opportunity discovered (96% Match)!');
+      toasts.success('Sync Complete', 'Opportunities up to date.');
     },
     resetToDefault: () => {
       saveToStorage(initialJobs);

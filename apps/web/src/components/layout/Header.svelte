@@ -9,6 +9,9 @@
     Search
   } from 'lucide-svelte';
 
+  import { api } from '$lib/api/client';
+  import { onMount } from 'svelte';
+
   export let activeTab: 'jobs' | 'applications' | 'profile' | 'preferences' = 'jobs';
 
   $: totalJobs = $jobStore.length;
@@ -16,6 +19,20 @@
   $: savedCount = $jobStore.filter((j) => j.status === 'saved').length;
   $: activeApps = $applicationStore.filter((a) => a.status !== 'REJECTED' && a.status !== 'WITHDRAWN').length;
   const isSyncing = jobStore.isSyncing;
+
+  let isApiOnline = false;
+
+  onMount(() => {
+    api.health()
+      .then((h) => {
+        if (h.status === 'healthy' && h.database === 'connected') {
+          isApiOnline = true;
+        }
+      })
+      .catch(() => {
+        isApiOnline = false;
+      });
+  });
 </script>
 
 <header class="header">
@@ -30,8 +47,8 @@
           SAGASU
         </div>
         <div class="brand-status">
-          <span class="pulsing-dot"></span>
-          <span class="status-lbl">DISCOVERY ACTIVE</span>
+          <span class="pulsing-dot {isApiOnline ? 'dot-connected' : ''}"></span>
+          <span class="status-lbl">{isApiOnline ? 'POSTGRESQL SYNCED' : 'DISCOVERY ACTIVE'}</span>
         </div>
       </div>
     </div>

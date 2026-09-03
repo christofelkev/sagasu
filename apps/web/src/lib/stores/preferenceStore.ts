@@ -2,6 +2,7 @@ import { writable } from 'svelte/store';
 import type { JobPreferences } from '@sagasu/api-contract';
 import { initialPreferences } from '../mock/initialData';
 import { toasts } from './toastStore';
+import { api } from '../api/client';
 
 const STORAGE_KEY = 'sagasu_job_preferences_v1';
 
@@ -26,6 +27,20 @@ function createPreferenceStore() {
     set(prefs);
   }
 
+  // Hydrate from backend API if available
+  if (typeof window !== 'undefined') {
+    api
+      .getPreferences()
+      .then((serverPrefs) => {
+        if (serverPrefs && serverPrefs.desiredRoles) {
+          saveAndNotify(serverPrefs);
+        }
+      })
+      .catch((err) => {
+        console.info('Backend preferences sync using cached store:', err.message);
+      });
+  }
+
   return {
     subscribe,
     update: (patch: Partial<JobPreferences>) => {
@@ -33,6 +48,7 @@ function createPreferenceStore() {
         const next = { ...curr, ...patch };
         saveAndNotify(next);
         toasts.success('Settings Saved', 'Job discovery preferences updated.');
+        api.updatePreferences(next).catch(() => {});
         return next;
       });
     },
@@ -45,12 +61,14 @@ function createPreferenceStore() {
           )
         };
         saveAndNotify(next);
+        api.updatePreferences(next).catch(() => {});
         return next;
       });
     },
     resetToDefault: () => {
       saveAndNotify(initialPreferences);
       toasts.info('Settings Reset', 'Restored default search configurations.');
+      api.updatePreferences(initialPreferences).catch(() => {});
     }
   };
 }

@@ -1,7 +1,8 @@
-import { writable } from 'svelte/store';
+import { writable, get } from 'svelte/store';
 import type { UserProfile, ProfileSkill, ExperienceItem, EducationItem } from '@sagasu/api-contract';
 import { initialProfile } from '../mock/initialData';
 import { toasts } from './toastStore';
+import { api } from '../api/client';
 
 const STORAGE_KEY = 'sagasu_user_profile_v1';
 
@@ -27,6 +28,20 @@ function createProfileStore() {
     set(newProfile);
   }
 
+  // Hydrate from backend API if available
+  if (typeof window !== 'undefined') {
+    api
+      .getProfile()
+      .then((serverProfile) => {
+        if (serverProfile && serverProfile.personal) {
+          saveAndNotify(serverProfile);
+        }
+      })
+      .catch((err) => {
+        console.info('Backend profile sync using cached store:', err.message);
+      });
+  }
+
   return {
     subscribe,
     updatePersonal: (personal: Partial<UserProfile['personal']>) => {
@@ -34,6 +49,7 @@ function createProfileStore() {
         const next = { ...profile, personal: { ...profile.personal, ...personal } };
         saveAndNotify(next);
         toasts.success('Profile Updated', 'Personal details saved successfully.');
+        api.updateProfile({ personal: next.personal }).catch(() => {});
         return next;
       });
     },
@@ -42,15 +58,18 @@ function createProfileStore() {
         const next = { ...profile, career: { ...profile.career, ...career } };
         saveAndNotify(next);
         toasts.success('Preferences Updated', 'Target roles and compensation criteria updated.');
+        api.updateProfile({ career: next.career }).catch(() => {});
         return next;
       });
     },
     addSkill: (skill: Omit<ProfileSkill, 'id'>) => {
+      const newSkillId = `sk-${Date.now()}`;
       update((profile) => {
-        const newSkill: ProfileSkill = { ...skill, id: `sk-${Date.now()}` };
+        const newSkill: ProfileSkill = { ...skill, id: newSkillId };
         const next = { ...profile, skills: [...profile.skills, newSkill] };
         saveAndNotify(next);
         toasts.success('Skill Added', `Added ${skill.name} to skills matrix.`);
+        api.addSkill({ ...skill, id: newSkillId }).catch(() => {});
         return next;
       });
     },
@@ -59,16 +78,21 @@ function createProfileStore() {
         const next = { ...profile, skills: profile.skills.filter((s) => s.id !== id) };
         saveAndNotify(next);
         toasts.info('Skill Removed', 'Skills matrix updated.');
+        api.removeSkill(id).catch(() => {});
         return next;
       });
     },
     updateSkill: (id: string, updates: Partial<ProfileSkill>) => {
       update((profile) => {
+        const skill = profile.skills.find((s) => s.id === id);
         const next = {
           ...profile,
           skills: profile.skills.map((s) => (s.id === id ? { ...s, ...updates } : s))
         };
         saveAndNotify(next);
+        if (skill) {
+          api.addSkill({ ...skill, ...updates, id }).catch(() => {});
+        }
         return next;
       });
     },
@@ -78,6 +102,7 @@ function createProfileStore() {
         const next = { ...profile, experiences: [newExp, ...profile.experiences] };
         saveAndNotify(next);
         toasts.success('Experience Added', `Added role at ${exp.company}.`);
+        api.updateProfile({ experiences: next.experiences }).catch(() => {});
         return next;
       });
     },
@@ -86,6 +111,7 @@ function createProfileStore() {
         const next = { ...profile, experiences: profile.experiences.filter((e) => e.id !== id) };
         saveAndNotify(next);
         toasts.info('Experience Removed', 'Work history updated.');
+        api.updateProfile({ experiences: next.experiences }).catch(() => {});
         return next;
       });
     },
@@ -98,14 +124,17 @@ function createProfileStore() {
         const newSkills: ProfileSkill[] = [...profile.skills];
         if (extracted.skills) {
           for (const sName of extracted.skills) {
-            if (!newSkills.some((s) => s.name.toLowerCase() === sName.toLowerCase())) {
-              newSkills.push({
-                id: `sk-cv-${Date.now()}-${Math.random().toString(36).substr(2, 3)}`,
+            const exists = newSkills.some((s) => s.name.toLowerCase() === sName.toLowerCase());
+            if (!exists) {
+              const newSkill: ProfileSkill = {
+                id: `sk-cv-${Date.now()}-${Math.random().toString(36).substring(7)}`,
                 name: sName,
                 category: 'frameworks',
                 level: 'proficient',
                 yearsOfExperience: 3
-              });
+              };
+              newSkills.push(newSkill);
+              api.addSkill(newSkill).catch(() => {});
             }
           }
         }
@@ -114,31 +143,26 @@ function createProfileStore() {
           ...profile,
           personal: {
             ...profile.personal,
-            bio: extracted.bio || profile.personal.bio,
-            title: extracted.careerHeadline || profile.personal.title
+            bio: extracted.bio || profile.personal.bio
           },
-          skills: newSkills,
-          resumes: [
-            ...profile.resumes,
-            {
-              id: `res-${Date.now()}`,
-              fileName: 'Extracted_CV_Candidate.pdf',
-              uploadedAt: new Date().toISOString(),
-              fileSize: 340000,
-              isCanonical: true,
-              parsedSummary: `AI parsed ${extracted.skills?.length || 0} skills and profile overview.`
-            }
-          ]
+          career: {
+            ...profile.career,
+            targetRoles: extracted.careerHeadline
+              ? [extracted.careerHeadline, ...profile.career.targetRoles.slice(0, 3)]
+              : profile.career.targetRoles
+          },
+          skills: newSkills
         };
 
         saveAndNotify(next);
-        toasts.success('CV Data Applied', 'Extracted career information merged into your profile.');
+        toasts.success('CV Imported', 'Extracted technical skills and headline synchronized into profile.');
+        api.uploadCV({ parsedSummary: extracted.bio || 'Parsed CV Qualifications' }).catch(() => {});
         return next;
       });
     },
     resetToDefault: () => {
       saveAndNotify(initialProfile);
-      toasts.info('Profile Reset', 'Reset profile back to demo defaults.');
+      toasts.info('Profile Reset', 'Restored default profile data.');
     }
   };
 }
