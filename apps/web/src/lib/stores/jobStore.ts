@@ -206,19 +206,23 @@ function createJobStore() {
     },
     syncSources: async () => {
       isSyncing.set(true);
-      toasts.info('Job Collector Running', 'Querying active adapters (LinkedIn, Glints, TechInAsia, RemoteOK)...', 2500);
+      toasts.info('Job Collector Running', 'Querying active adapters (RemoteOK, HackerNews, TechInAsia)...', 3500);
 
       try {
-        const res = await api.getJobs({ limit: 100 });
-        if (res.items && res.items.length > 0) {
-          saveToStorage(res.items);
+        const syncRes = await api.syncJobs();
+        const refresh = await api.getJobs({ limit: 100 });
+        if (refresh.items && refresh.items.length > 0) {
+          saveToStorage(refresh.items);
           isApiConnected.set(true);
-          isSyncing.set(false);
-          toasts.success('Sync Complete', `Synchronized ${res.items.length} opportunities from PostgreSQL.`);
-          return;
         }
-      } catch (e) {
-        console.warn('API sync fallback to local simulation');
+        isSyncing.set(false);
+        toasts.success(
+          'Collector Sync Complete',
+          `Discovered ${syncRes.totalDiscovered} jobs: ${syncRes.newIndexed} newly indexed, ${syncRes.deduplicatedCount} merged duplicates.`
+        );
+        return;
+      } catch (e: any) {
+        console.warn('API sync fallback to local store:', e.message);
       }
 
       // Fallback simulation

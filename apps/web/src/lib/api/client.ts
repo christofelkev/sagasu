@@ -69,6 +69,18 @@ export class ApiClient {
     return this.request<Job>(`/jobs/${id}`);
   }
 
+  async syncJobs(payload?: { keywords?: string[]; limitPerSource?: number }): Promise<{
+    totalDiscovered: number;
+    newIndexed: number;
+    deduplicatedCount: number;
+    items: Job[];
+  }> {
+    return this.request('/jobs/sync', {
+      method: 'POST',
+      body: JSON.stringify(payload || {})
+    });
+  }
+
   async saveJob(id: string): Promise<Job> {
     return this.request<Job>(`/jobs/${id}/save`, { method: 'POST' });
   }
