@@ -1,6 +1,7 @@
 import { Elysia, t } from 'elysia';
 import { sql } from '../../infrastructure/database/db';
 import { ApiError, formatError } from '../../infrastructure/http/error-handler';
+import { collectorService } from '../collector/collector.service';
 import type { Job } from '@sagasu/api-contract';
 
 function mapRowToJob(row: any): Job {
@@ -115,4 +116,9 @@ export const jobsController = new Elysia({ prefix: '/jobs' })
       return formatError('JOB_NOT_FOUND', `Job with ID ${params.id} was not found.`);
     }
     return mapRowToJob(row);
+  })
+  .post('/sync', async ({ body }) => {
+    const payload = (body as { keywords?: string[]; limitPerSource?: number }) || {};
+    const result = await collectorService.runSync(payload);
+    return result;
   });
