@@ -1,5 +1,8 @@
 import { sql } from '../../infrastructure/database/db';
 import { calculateMatch } from '../matching/matchingEngine';
+import { LinkedInAdapter } from './adapters/linkedin.adapter';
+import { GlintsAdapter } from './adapters/glints.adapter';
+import { JobStreetAdapter } from './adapters/jobstreet.adapter';
 import { RemoteOKAdapter } from './adapters/remoteok.adapter';
 import { HackerNewsAdapter } from './adapters/hackernews.adapter';
 import type { JobSourceAdapter, RawJob } from './adapters/types';
@@ -18,7 +21,13 @@ export class CollectorService {
   private adapters: JobSourceAdapter[];
 
   constructor() {
-    this.adapters = [new RemoteOKAdapter(), new HackerNewsAdapter()];
+    this.adapters = [
+      new LinkedInAdapter(),
+      new GlintsAdapter(),
+      new JobStreetAdapter(),
+      new RemoteOKAdapter(),
+      new HackerNewsAdapter()
+    ];
   }
 
   async runSync(options?: { keywords?: string[]; limitPerSource?: number }): Promise<CollectorSyncResult> {

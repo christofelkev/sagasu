@@ -1,4 +1,4 @@
-﻿import postgres from 'postgres';
+import postgres from 'postgres';
 import fs from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
@@ -70,54 +70,8 @@ export async function initializeDatabase() {
       }
     }
 
-    // Seed Jobs if missing
-    const [jobCount] = await sql`SELECT COUNT(*)::int as count FROM jobs`;
-    if (jobCount.count === 0) {
-      console.log('Seeding initial opportunities...');
-      for (const j of seedJobs) {
-        await sql`
-          INSERT INTO jobs (
-            id, title, company, company_logo, location, remote, employment_type,
-            description, requirements, responsibilities, nice_to_have, skills,
-            salary, posted_at, collected_at, source_url, source_platform,
-            deduplication_sources, match_score, match_result, status
-          ) VALUES (
-            ${j.id}, ${j.title}, ${j.company}, ${j.companyLogo || null}, ${j.location},
-            ${j.remote}, ${j.employmentType}, ${j.description},
-            ${sql.json(j.requirements)}, ${sql.json(j.responsibilities)},
-            ${sql.json(j.niceToHave || [])}, ${sql.json(j.skills)},
-            ${j.salary ? sql.json(j.salary) : null},
-            ${j.postedAt}, ${j.collectedAt}, ${j.sourceUrl}, ${j.sourcePlatform},
-            ${sql.json(j.deduplicationSources || [])},
-            ${j.matchScore}, ${sql.json(j.matchResult)}, ${j.status}
-          )
-        `;
-      }
-    }
-
-    // Seed Applications if missing
-    const [appCount] = await sql`SELECT COUNT(*)::int as count FROM applications`;
-    if (appCount.count === 0) {
-      console.log('Seeding application pipeline...');
-      for (const app of seedApplications) {
-        await sql`
-          INSERT INTO applications (
-            id, job_id, status, status_history, prepared_materials,
-            target_submission_date, applied_date, salary_expectation,
-            contact_person, interviews, created_at, updated_at
-          ) VALUES (
-            ${app.id}, ${app.jobId}, ${app.status},
-            ${sql.json(app.statusHistory)},
-            ${app.preparedMaterials ? sql.json(app.preparedMaterials) : null},
-            ${app.targetSubmissionDate || null}, ${app.appliedDate || null},
-            ${app.salaryExpectation || null},
-            ${app.contactPerson ? sql.json(app.contactPerson) : null},
-            ${sql.json(app.interviews || [])},
-            ${app.createdAt}, ${app.updatedAt}
-          )
-        `;
-      }
-    }
+    // Jobs and Applications start empty for user-driven discovery sync
+    console.log('Database ready. Jobs & application tracking pipeline active.');
 
     // Seed Preferences if missing
     const existingPref = await sql`SELECT id FROM preferences WHERE id = 'default' LIMIT 1`;
