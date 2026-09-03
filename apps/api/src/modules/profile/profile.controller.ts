@@ -46,11 +46,11 @@ export const profileController = new Elysia({ prefix: '/profile' })
     await sql`
       UPDATE user_profiles
       SET
-        personal = COALESCE(${data.personal ? sql.json(data.personal) : null}, personal),
-        career = COALESCE(${data.career ? sql.json(data.career) : null}, career),
-        experiences = COALESCE(${data.experiences ? sql.json(data.experiences) : null}, experiences),
-        educations = COALESCE(${data.educations ? sql.json(data.educations) : null}, educations),
-        resumes = COALESCE(${data.resumes ? sql.json(data.resumes) : null}, resumes),
+        personal = COALESCE(${data.personal ? sql.json(data.personal) : sql.literal('NULL')}, personal),
+        career = COALESCE(${data.career ? sql.json(data.career) : sql.literal('NULL')}, career),
+        experiences = COALESCE(${data.experiences ? sql.json(data.experiences) : sql.literal('NULL')}, experiences),
+        educations = COALESCE(${data.educations ? sql.json(data.educations) : sql.literal('NULL')}, educations),
+        resumes = COALESCE(${data.resumes ? sql.json(data.resumes) : sql.literal('NULL')}, resumes),
         updated_at = NOW()
       WHERE id = ${existing.id}
     `;

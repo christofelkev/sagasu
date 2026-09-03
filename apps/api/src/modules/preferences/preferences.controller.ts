@@ -5,7 +5,8 @@ import type { JobPreferences } from '@sagasu/api-contract';
 
 export const preferencesController = new Elysia({ prefix: '/preferences' })
   .get('/', async () => {
-    const [row] = await sql`SELECT payload FROM preferences WHERE id = 'default' LIMIT 1`;
+    const result = await sql`SELECT payload FROM preferences WHERE id = 'default' LIMIT 1`;
+    const row = Array.isArray(result) ? result[0] : result;
     if (!row) {
       return seedPreferences;
     }
